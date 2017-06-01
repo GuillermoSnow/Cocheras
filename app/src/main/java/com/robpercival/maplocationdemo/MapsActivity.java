@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
 
+import com.google.android.gms.identity.intents.Address;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -25,7 +26,9 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.vision.barcode.Barcode;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,6 +37,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -44,6 +48,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     LocationManager locationManager;
 
     LocationListener locationListener;
+    List<Barcode.GeoPoint> direcciones;
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -77,7 +82,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         CargarUbicacionCocheras cargarCocheras= new CargarUbicacionCocheras();
-        cargarCocheras.execute("tuURL");
+        cargarCocheras.execute("tuURL"); // La api de carlos va aqui
     }
 
     public class CargarUbicacionCocheras extends AsyncTask<String,Void, String>{
@@ -97,6 +102,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     char current = (char) data;
                     result+=current;
                     data=reader.read();
+
                 }
                 return result;
 
@@ -113,14 +119,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             try {
-                JSONObject jsonObject= new JSONObject(result);
-                //Aca va el Json
-
+                createMarkersFromJson(result);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
 
+        }
+    }
+    void createMarkersFromJson(String json) throws  JSONException{
+        JSONArray jsonArray = new JSONArray(json);
+        for(int i=0; i<jsonArray.length();i++){
+            JSONObject jsonObject= jsonArray.getJSONObject(i);
+            mMap.addMarker(new MarkerOptions().title(jsonObject.getString("name"))
+                    
+            .position(new LatLng(jsonObject.getJSONArray("latlng").getDouble(0),
+                    jsonObject.getJSONArray("latlng").getDouble(1))));
         }
     }
 
