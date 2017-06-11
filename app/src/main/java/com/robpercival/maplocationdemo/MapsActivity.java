@@ -15,6 +15,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.identity.intents.Address;
@@ -24,6 +25,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -48,7 +50,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     LocationManager locationManager;
 
     LocationListener locationListener;
-    List<Barcode.GeoPoint> direcciones;
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -81,8 +82,48 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        CargarUbicacionCocheras cargarCocheras= new CargarUbicacionCocheras();
-        cargarCocheras.execute("tuURL"); // La api de carlos va aqui
+        JSONObject lugar1 = new JSONObject();
+        try{
+            lugar1.put("latitude","15.613658");
+            lugar1.put("longitude","16.106653");
+
+        }catch (JSONException e) {
+            e.printStackTrace();
+            Log.i("Error","Plocs");
+
+        }
+        JSONObject lugar2 = new JSONObject();
+        try{
+            lugar2.put("latitude","48.613658");
+            lugar2.put("longitude","-80.106653");
+        }catch (JSONException e) {
+            e.printStackTrace();
+            Log.i("Error","Plocs");
+
+        }
+        JSONArray jsonArray = new JSONArray();
+        jsonArray.put(lugar1);
+        jsonArray.put(lugar2);
+        JSONObject lugares = new JSONObject();
+        try {
+            lugares.put("Lugares",jsonArray);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Log.i("Error","Plocs");
+        }
+        /*try {
+            lugares.put("Lugares",lugares);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }*/
+        String jsonStr= lugares.toString();
+        try {
+            createMarkersFromJson(jsonStr);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+       /* CargarUbicacionCocheras cargarCocheras= new CargarUbicacionCocheras();
+        cargarCocheras.execute("tuURL"); // La api de carlos va aqui */
     }
 
     public class CargarUbicacionCocheras extends AsyncTask<String,Void, String>{
@@ -131,10 +172,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         JSONArray jsonArray = new JSONArray(json);
         for(int i=0; i<jsonArray.length();i++){
             JSONObject jsonObject= jsonArray.getJSONObject(i);
-            mMap.addMarker(new MarkerOptions().title(jsonObject.getString("name"))
-                    
-            .position(new LatLng(jsonObject.getJSONArray("latlng").getDouble(0),
-                    jsonObject.getJSONArray("latlng").getDouble(1))));
+            double latitud= Double.parseDouble(jsonObject.getString("latitude"));
+            double longitud=Double.parseDouble(jsonObject.getString("longitude"));
+            mMap.addMarker(new MarkerOptions().title("Punto")
+
+            .position(new LatLng(latitud,
+                    longitud)));
         }
     }
 
@@ -168,6 +211,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 userMarker.draggable(true);
                 mMap.addMarker(userMarker);
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation));
+                Log.i("hI","F");
+
 
 
             }
@@ -197,6 +242,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                Log.i("hI","F");
+
 
             } else {
 
@@ -206,10 +253,71 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 LatLng userLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
                 mMap.clear();
+                MarkerOptions userMarker= new MarkerOptions().position(userLocation).title("User Location");
+                userMarker.icon(BitmapDescriptorFactory.fromResource( R.drawable.usericon));
+                userMarker.draggable(true);
 
-                mMap.addMarker(new MarkerOptions().position(userLocation).title("Your Location"));
+                mMap.addMarker(userMarker);
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation));
+                JSONObject lugar1 = new JSONObject();
+                Log.i("hI","F");
+                try{
+                    lugar1.put("latitude","-12.0534268");
+                    lugar1.put("longitude","-77.0813782");
 
+                }catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.i("Error","Plocs");
+
+                }
+                JSONObject lugar2 = new JSONObject();
+                try{
+                    lugar2.put("latitude","-12.0662727");
+                    lugar2.put("longitude","-77.0693972");
+                }catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.i("Error","Plocs");
+
+                }
+                JSONArray jsonArray = new JSONArray();
+                jsonArray.put(lugar1);
+                jsonArray.put(lugar2);
+
+                /*try {
+                    lugares.put("Lugares",lugares);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }*/
+
+
+
+                 for(int i=0; i<jsonArray.length();i++){
+
+                     JSONObject jsonObject= null;
+
+                     try {
+                         jsonObject = jsonArray.getJSONObject(i);
+                     } catch (JSONException e) {
+                         e.printStackTrace();
+                     }
+
+                     double latitud=0;
+                    try {
+                        latitud = Double.parseDouble(jsonObject.getString("latitude"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    double longitud= 0;
+                    try {
+                        longitud = Double.parseDouble(jsonObject.getString("longitude"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    mMap.addMarker(new MarkerOptions().title("Punto")
+
+                            .position(new LatLng(latitud,
+                                    longitud)));
+                }
 
             }
 
