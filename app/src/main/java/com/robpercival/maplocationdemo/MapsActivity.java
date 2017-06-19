@@ -3,6 +3,7 @@ package com.robpercival.maplocationdemo;
 import android.*;
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Location;
@@ -28,6 +29,7 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.vision.barcode.Barcode;
 
@@ -40,6 +42,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -116,41 +119,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             } catch (IOException e) {
                 e.printStackTrace();
             }*/
-            String ll= String.valueOf(urls);
+
+            String result = null;
+            try {
+
+                InputStream is = getAssets().open("variasCocheras.json");
+
+                int size = is.available();
+
+                byte[] buffer = new byte[size];
+
+                is.read(buffer);
+
+                is.close();
+
+                result = new String(buffer, "UTF-8");
 
 
-            JSONArray req = new JSONArray();
-            JSONObject lugar1 = new JSONObject();
-
-            try {
-                lugar1.put("id_empresa","1");
-            } catch (JSONException e) {
-                e.printStackTrace();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                return null;
             }
-            try {
-                lugar1.put("nombre","Cochera fake");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            JSONObject coordenadas = new JSONObject();
-            try {
-                coordenadas.put("lat","-12.0321091");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            try {
-                coordenadas.put("lng","-77.0805006");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            try {
-                lugar1.put("coordenada",coordenadas);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            req.put(lugar1);
-            String result=req.toString();
             return result;
         }
 
@@ -158,22 +147,47 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
              String a=null;
+             String ss=" ";
             try {
                 JSONArray lugares= new JSONArray(result);
-
+                ArrayList<Cochera> cocheras = new ArrayList<Cochera>();
                 for(int i=0; i<lugares.length();i++){
+                    Cochera coch=new Cochera();
                     JSONObject jsonObject= lugares.getJSONObject(i);
-                    JSONObject coordenada= jsonObject.getJSONObject("coordenada");
+                    JSONObject coordenada= jsonObject.getJSONObject("coordenadas");
+
+                    JSONArray servicios= new JSONArray(jsonObject.getString("servicioCocheras"));
                     double latitud= Double.parseDouble(coordenada.getString("lat"));
                     double longitud=Double.parseDouble(coordenada.getString("lng"));
-                    mMap.addMarker(new MarkerOptions().title("Punto").position(new LatLng(latitud,
-                            longitud)));
-                    a=Double.toString(latitud);
+                    coch.setLatitud(latitud);
+                    coch.setLongitud(longitud);
+                    coch.setCapacidad(jsonObject.getString("capacidad"));
+
+                    ArrayList<String> listaservicios= new ArrayList<String>() ;
+                    for (int j=0; j<servicios.length();j++){
+                        JSONObject jsonObjects= servicios.getJSONObject(j);
+
+                        if(jsonObjects.getBoolean("estado")==true){
+                            JSONObject detalleservicio= jsonObjects.getJSONObject("tipoServicio");
+                            listaservicios.add("Nombre :"+detalleservicio.getString("nombre")+" Precio: "+ jsonObjects.getString("precio_hora"));
+
+                            //ss= ss+" Servicio: "+detalleservicio.getString("nombre")+ " Precio: "+ jsonObjects.getString("precio_hora");
+                            mMap.addMarker(new MarkerOptions().title(jsonObject.getString("nombre")).position(new LatLng(latitud,
+                                longitud)).snippet("Capacidad : "+jsonObject.getString("capacidad")
+
+                        )); }
+
+                    }
+                    coch.setLista(listaservicios);
+                    cocheras.add(coch);
+
+
                 }
+
             } catch (JSONException e) {
-                Toast.makeText(getApplication(),"No se pudo", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplication(),"Error al cargar los datos", Toast.LENGTH_SHORT).show();
             }
-             Toast.makeText(getApplication(),a, Toast.LENGTH_LONG).show();
+
 
 
         }
@@ -213,7 +227,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 });
             }
         };
-        timer.schedule(doAsynchronousTask, 0, 10000); //execute in every 50000 ms
+        timer.schedule(doAsynchronousTask, 0, 10000); //execute in every 100000 ms
     }
 
 
@@ -241,14 +255,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
                 mMap.clear();
-                MarkerOptions userMarker= new MarkerOptions().position(userLocation).title("Dolar mak");
+                MarkerOptions userMarker= new MarkerOptions().position(userLocation).title("Tu locacion");
                 userMarker.icon(BitmapDescriptorFactory.fromResource( R.drawable.usericon));
-                userMarker.draggable(true);
+                userMarker.draggable(false);
                 mMap.addMarker(userMarker);
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation));
-                Log.i("hI","F");
-                CargarUbicacionCocheras cargarUbicacionCocheras= new CargarUbicacionCocheras();
-                cargarUbicacionCocheras.execute("Hola");
+                callAsynchronousTask();
 
 
 
@@ -281,7 +293,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-                Log.i("hI","F");
+
                 CargarUbicacionCocheras cargarUbicacionCocheras= new CargarUbicacionCocheras();
                 cargarUbicacionCocheras.execute("Hola");
 
@@ -375,7 +387,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
         }
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            public void onInfoWindowClick(Marker marker) {
+                Intent intent = new Intent(MapsActivity.this, DetalleServicio.class);
+                startActivity(intent);
 
+
+            }
+        });
 
     }
+
 }
