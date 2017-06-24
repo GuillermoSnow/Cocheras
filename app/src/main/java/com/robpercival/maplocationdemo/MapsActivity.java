@@ -56,6 +56,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     LocationManager locationManager;
 
     LocationListener locationListener;
+    ArrayList<Cochera> cocheras;
+    static String CAPACIDAD;
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -123,7 +125,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             String result = null;
             try {
 
-                InputStream is = getAssets().open("variasCocheras.json");
+                InputStream is = getAssets().open("meqCocheras.json");
 
                 int size = is.available();
 
@@ -155,7 +157,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     Cochera coch=new Cochera();
                     JSONObject jsonObject= lugares.getJSONObject(i);
                     JSONObject coordenada= jsonObject.getJSONObject("coordenadas");
-
                     JSONArray servicios= new JSONArray(jsonObject.getString("servicioCocheras"));
                     double latitud= Double.parseDouble(coordenada.getString("lat"));
                     double longitud=Double.parseDouble(coordenada.getString("lng"));
@@ -169,27 +170,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                         if(jsonObjects.getBoolean("estado")==true){
                             JSONObject detalleservicio= jsonObjects.getJSONObject("tipoServicio");
-                            listaservicios.add("Nombre :"+detalleservicio.getString("nombre")+" Precio: "+ jsonObjects.getString("precio_hora"));
+                            listaservicios.add(detalleservicio.getString("nombre")+": Precio: S/. "+ jsonObjects.getString("precio_hora"));
 
                             //ss= ss+" Servicio: "+detalleservicio.getString("nombre")+ " Precio: "+ jsonObjects.getString("precio_hora");
-                            mMap.addMarker(new MarkerOptions().title(jsonObject.getString("nombre")).position(new LatLng(latitud,
-                                longitud)).snippet("Capacidad : "+jsonObject.getString("capacidad")
+                             Marker mark = mMap.addMarker(new MarkerOptions().title(jsonObject.getString("nombre")).position(new LatLng(latitud,
+                                    longitud)).snippet("Capacidad : " + jsonObject.getString("capacidad")
 
-                        )); }
+                            ).icon(BitmapDescriptorFactory.fromResource(R.drawable.coche))
+
+                            );
+                            mark.setTag(listaservicios);
+
+
+                        }
 
                     }
-                    coch.setLista(listaservicios);
-                    cocheras.add(coch);
-
-
+                     // coch.setLista(listaservicios);
+                     // cocheras.add(coch);
                 }
 
             } catch (JSONException e) {
                 Toast.makeText(getApplication(),"Error al cargar los datos", Toast.LENGTH_SHORT).show();
             }
-
-
-
         }
     }
 
@@ -255,10 +257,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
                 mMap.clear();
-                MarkerOptions userMarker= new MarkerOptions().position(userLocation).title("Tu locacion");
+                MarkerOptions userMarker= new MarkerOptions().position(userLocation).title("User Location");
                 userMarker.icon(BitmapDescriptorFactory.fromResource( R.drawable.usericon));
                 userMarker.draggable(false);
+
                 mMap.addMarker(userMarker);
+
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation));
                 callAsynchronousTask();
 
@@ -310,78 +314,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 userMarker.icon(BitmapDescriptorFactory.fromResource( R.drawable.usericon));
 
                 mMap.addMarker(userMarker);
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,10));
                 callAsynchronousTask();
-                /*try {
-                    CargarUbicacionCocheras cargarUbicacionCocheras= new CargarUbicacionCocheras();
-                    cargarUbicacionCocheras.execute("Hola");
-                }catch (Exception e){
-                    Log.i("Cagado","maq");
-                }
 
-                 JSONObject lugar1 = new JSONObject();
-                Log.i("hI","F");
-                try{
-                    lugar1.put("latitude","-12.0534268");
-                    lugar1.put("longitude","-77.0813782");
-
-                }catch (JSONException e) {
-                    e.printStackTrace();
-                    Log.i("Error","Plocs");
-
-                }
-                JSONObject lugar2 = new JSONObject();
-                try{
-                    lugar2.put("latitude","-12.0662727");
-                    lugar2.put("longitude","-77.0693972");
-                }catch (JSONException e) {
-                    e.printStackTrace();
-                    Log.i("Error","Plocs");
-
-                }
-                JSONArray jsonArray = new JSONArray();
-                jsonArray.put(lugar1);
-                jsonArray.put(lugar2);
-
-                try {
-                    lugares.put("Lugares",lugares);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    createMarkersFromJson(jsonArray);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                /*
-                for(int i=0; i<jsonArray.length();i++){
-
-                     JSONObject jsonObject= null;
-
-                     try {
-                         jsonObject = jsonArray.getJSONObject(i);
-                     } catch (JSONException e) {
-                         e.printStackTrace();
-                     }
-
-                     double latitud=0;
-                    try {
-                        latitud = Double.parseDouble(jsonObject.getString("latitude"));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    double longitud= 0;
-                    try {
-                        longitud = Double.parseDouble(jsonObject.getString("longitude"));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    mMap.addMarker(new MarkerOptions().title("Punto").icon(BitmapDescriptorFactory.fromResource( R.drawable.cochera))
-
-                            .position(new LatLng(latitud,
-                                    longitud)));
-                }*/
 
             }
 
@@ -389,12 +324,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             public void onInfoWindowClick(Marker marker) {
-                Intent intent = new Intent(MapsActivity.this, DetalleServicio.class);
-                startActivity(intent);
+                if(marker.getTitle()!="User Location") {
+                    ArrayList<String> info = (ArrayList<String>) marker.getTag();
+                    Intent intent = new Intent(MapsActivity.this, DetalleServicio.class);
+                    intent.putExtra("LISTA", info);
 
+                    startActivity(intent);
+                }
 
             }
         });
+
 
     }
 
