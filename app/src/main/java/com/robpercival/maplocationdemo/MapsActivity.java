@@ -40,6 +40,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -99,33 +100,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         @Override
         protected String doInBackground(String... urls) {
-            /*String result= "";
+            String result = "";
             URL url;
-            HttpsURLConnection urlConnection= null;
+            HttpURLConnection urlConnection= null;
             try {
                 url =new URL(urls[0]);
-                urlConnection= (HttpsURLConnection) url.openConnection();
-                InputStream in= urlConnection.getInputStream();
-                InputStreamReader reader= new InputStreamReader(in);
-                int data = reader.read();
-                while (data!= -1){
-                    char current = (char) data;
-                    result+=current;
-                    data=reader.read();
+                urlConnection = (HttpURLConnection) url.openConnection();
 
+                InputStream in = urlConnection.getInputStream();
+
+                InputStreamReader reader = new InputStreamReader(in);
+                int data = reader.read();
+                while (data != -1) {
+                    char current = (char) data;
+                    result += current;
+                    data = reader.read();
                 }
-                return result;
+                Log.i("JSON", result);
+
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }*/
 
-            String result = null;
+            } catch (IOException ex) {
+                ex.printStackTrace();
+
+            }
+
+            /*String result = null;
             try {
 
-                InputStream is = getAssets().open("meqCocheras.json");
+                InputStream is = getAssets().open("variasCocheras.json");
 
                 int size = is.available();
 
@@ -141,7 +146,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             } catch (IOException ex) {
                 ex.printStackTrace();
                 return null;
-            }
+            }*/
             return result;
         }
 
@@ -190,7 +195,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
 
             } catch (JSONException e) {
-                Toast.makeText(getApplication(),"Error al cargar los datos", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplication(),"Meq", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -210,7 +215,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     longitud)));
         }
     }
-    public void callAsynchronousTask() {
+    /* public void callAsynchronousTask() {
         final Handler handler = new Handler();
         Timer timer = new Timer();
         TimerTask doAsynchronousTask = new TimerTask() {
@@ -221,16 +226,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         try {
                             CargarUbicacionCocheras cargarUbicacionCocheras = new CargarUbicacionCocheras();
                             // PerformBackgroundTask this class is the class that extends AsynchTask
-                            cargarUbicacionCocheras.execute("Hola");
+                            cargarUbicacionCocheras.execute("54.175.211.134:3000/todaCocheraConServicios");
                         } catch (Exception e) {
-                            // TODO Auto-generated catch block
+                            Toast.makeText(getApplication(),"Error al cargar los datos", Toast.LENGTH_SHORT).show();
+
                         }
                     }
                 });
             }
         };
-        timer.schedule(doAsynchronousTask, 0, 10000); //execute in every 100000 ms
-    }
+        timer.schedule(doAsynchronousTask, 0, 100000); //execute in every 100000 ms
+    }*/
 
 
 
@@ -264,7 +270,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.addMarker(userMarker);
 
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation));
-                callAsynchronousTask();
+                //callAsynchronousTask();
+               // CargarUbicacionCocheras cargarUbicacionCocheras= new CargarUbicacionCocheras();
+               // cargarUbicacionCocheras.execute("http://54.175.211.134:3000/todaCocheraConServicios");
 
 
 
@@ -299,7 +307,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
 
                 CargarUbicacionCocheras cargarUbicacionCocheras= new CargarUbicacionCocheras();
-                cargarUbicacionCocheras.execute("Hola");
+                cargarUbicacionCocheras.execute("http://54.175.211.134:3000/todaCocheraConServicios");
 
 
             } else {
@@ -315,7 +323,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 mMap.addMarker(userMarker);
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,10));
-                callAsynchronousTask();
+                //callAsynchronousTask();
+                CargarUbicacionCocheras cargarUbicacionCocheras= new CargarUbicacionCocheras();
+                cargarUbicacionCocheras.execute("http://54.175.211.134:3000/todaCocheraConServicios");
 
 
             }
