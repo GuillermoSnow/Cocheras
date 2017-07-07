@@ -18,9 +18,15 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.GooglePlayServicesAvailabilityException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.identity.intents.Address;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -53,34 +59,22 @@ import javax.net.ssl.HttpsURLConnection;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-
     LocationManager locationManager;
-
     LocationListener locationListener;
-    ArrayList<Cochera> cocheras;
-    static String CAPACIDAD;
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (requestCode == 1) {
-
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     {
-
                         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-
                     }
-
                 }
-
             }
-
         }
-
     }
 
     @Override
@@ -88,13 +82,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-       /* CargarUbicacionCocheras cargarCocheras= new CargarUbicacionCocheras();
-        cargarCocheras.execute("tuURL"); // La api de carlos va aqui */
     }
+
+
 
     public class CargarUbicacionCocheras extends AsyncTask<String,Void,String>{
 
@@ -104,7 +99,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             URL url;
             HttpURLConnection urlConnection= null;
             try {
-                url =new URL(urls[0]);
+                url = new URL(urls[0]);
                 urlConnection = (HttpURLConnection) url.openConnection();
 
                 InputStream in = urlConnection.getInputStream();
@@ -118,7 +113,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
                 Log.i("JSON", result);
 
-
             } catch (MalformedURLException e) {
                 e.printStackTrace();
 
@@ -126,27 +120,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 ex.printStackTrace();
 
             }
-
-            /*String result = null;
-            try {
-
-                InputStream is = getAssets().open("variasCocheras.json");
-
-                int size = is.available();
-
-                byte[] buffer = new byte[size];
-
-                is.read(buffer);
-
-                is.close();
-
-                result = new String(buffer, "UTF-8");
-
-
-            } catch (IOException ex) {
-                ex.printStackTrace();
-                return null;
-            }*/
             return result;
         }
 
@@ -185,13 +158,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                             );
                             mark.setTag(listaservicios);
-
-
                         }
 
                     }
-                     // coch.setLista(listaservicios);
-                     // cocheras.add(coch);
                 }
 
             } catch (JSONException e) {
@@ -215,40 +184,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     longitud)));
         }
     }
-    /* public void callAsynchronousTask() {
-        final Handler handler = new Handler();
-        Timer timer = new Timer();
-        TimerTask doAsynchronousTask = new TimerTask() {
-            @Override
-            public void run() {
-                handler.post(new Runnable() {
-                    public void run() {
-                        try {
-                            CargarUbicacionCocheras cargarUbicacionCocheras = new CargarUbicacionCocheras();
-                            // PerformBackgroundTask this class is the class that extends AsynchTask
-                            cargarUbicacionCocheras.execute("54.175.211.134:3000/todaCocheraConServicios");
-                        } catch (Exception e) {
-                            Toast.makeText(getApplication(),"Error al cargar los datos", Toast.LENGTH_SHORT).show();
 
-                        }
-                    }
-                });
-            }
-        };
-        timer.schedule(doAsynchronousTask, 0, 100000); //execute in every 100000 ms
-    }*/
-
-
-
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
@@ -268,13 +204,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 userMarker.draggable(false);
 
                 mMap.addMarker(userMarker);
-
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation));
-                //callAsynchronousTask();
-               // CargarUbicacionCocheras cargarUbicacionCocheras= new CargarUbicacionCocheras();
-               // cargarUbicacionCocheras.execute("http://54.175.211.134:3000/todaCocheraConServicios");
-
-
 
             }
 
@@ -323,7 +253,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 mMap.addMarker(userMarker);
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,10));
-                //callAsynchronousTask();
                 CargarUbicacionCocheras cargarUbicacionCocheras= new CargarUbicacionCocheras();
                 cargarUbicacionCocheras.execute("http://54.175.211.134:3000/todaCocheraConServicios");
 
