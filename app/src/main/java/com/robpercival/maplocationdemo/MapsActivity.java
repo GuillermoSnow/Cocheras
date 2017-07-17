@@ -1,43 +1,30 @@
 package com.robpercival.maplocationdemo;
 
-import android.*;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.GooglePlayServicesAvailabilityException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.identity.intents.Address;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlaceAutocomplete;
-import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.vision.barcode.Barcode;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -50,11 +37,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import javax.net.ssl.HttpsURLConnection;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -90,7 +72,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-
     public class CargarUbicacionCocheras extends AsyncTask<String,Void,String>{
 
         @Override
@@ -118,7 +99,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             } catch (IOException ex) {
                 ex.printStackTrace();
-
             }
             return result;
         }
@@ -171,19 +151,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
 
-    void createMarkersFromJson(JSONArray json) throws  JSONException{
+/*    void createMarkersFromJson(JSONArray json) throws  JSONException{
 
         for(int i=0; i<json.length();i++){
             JSONObject jsonObject= json.getJSONObject(i);
             JSONObject coordenada= jsonObject.getJSONObject("coordenada");
             double latitud= Double.parseDouble(jsonObject.getString("lat"));
             double longitud=Double.parseDouble(jsonObject.getString("lng"));
-            mMap.addMarker(new MarkerOptions().title("Punto")
-
-            .position(new LatLng(latitud,
-                    longitud)));
+            mMap.addMarker(new MarkerOptions().title("Punto").position(new LatLng(latitud,longitud)));
         }
-    }
+    }*/
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -202,7 +179,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 MarkerOptions userMarker= new MarkerOptions().position(userLocation).title("User Location");
                 userMarker.icon(BitmapDescriptorFactory.fromResource( R.drawable.usericon));
                 userMarker.draggable(false);
-
                 mMap.addMarker(userMarker);
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation));
 
@@ -235,28 +211,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-
                 CargarUbicacionCocheras cargarUbicacionCocheras= new CargarUbicacionCocheras();
-                cargarUbicacionCocheras.execute("http://54.175.211.134:3000/todaCocheraConServicios");
+                cargarUbicacionCocheras.execute("https://cocheras-lb.herokuapp.com/todaCocheraConServicios");
 
 
             } else {
 
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-
                 Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
                 LatLng userLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
                 mMap.clear();
                 MarkerOptions userMarker= new MarkerOptions().position(userLocation).title("User Location");
                 userMarker.icon(BitmapDescriptorFactory.fromResource( R.drawable.usericon));
-
                 mMap.addMarker(userMarker);
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,10));
                 CargarUbicacionCocheras cargarUbicacionCocheras= new CargarUbicacionCocheras();
-                cargarUbicacionCocheras.execute("http://54.175.211.134:3000/todaCocheraConServicios");
-
-
+                cargarUbicacionCocheras.execute("https://cocheras-lb.herokuapp.com/todaCocheraConServicios");
             }
 
 
@@ -267,7 +237,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     ArrayList<String> info = (ArrayList<String>) marker.getTag();
                     Intent intent = new Intent(MapsActivity.this, DetalleServicio.class);
                     intent.putExtra("LISTA", info);
-
                     startActivity(intent);
                 }
 
