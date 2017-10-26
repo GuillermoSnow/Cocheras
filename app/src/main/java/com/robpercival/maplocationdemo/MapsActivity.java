@@ -1,6 +1,7 @@
 package com.robpercival.maplocationdemo;
 
 import android.Manifest;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -23,6 +24,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -39,7 +41,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -128,7 +129,21 @@ import java.util.ArrayList;
         }
     }
     private void selectItem(int position) {
-        // Create a new fragment and specify the planet to show based on position
+        // Create a new fragment
+        Fragment fragment = new InfoFragment();
+        Bundle args= new Bundle();
+        args.putInt(InfoFragment.ARG_INFOR_NUMBER, position);
+        fragment.setArguments(args);
+        FragmentManager fragmentManager = getFragmentManager();
+
+    }
+
+    public static class InfoFragment extends  Fragment{
+        public static final String ARG_INFOR_NUMBER = "info_number";
+
+        public InfoFragment(){
+        }
+
 
     }
 
