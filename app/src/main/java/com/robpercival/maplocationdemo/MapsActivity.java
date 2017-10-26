@@ -277,7 +277,7 @@ import java.util.ArrayList;
         if (Build.VERSION.SDK_INT < 23) {
 
 
-                Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 LatLng userLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
                 MarkerOptions userMarker = new MarkerOptions().position(userLocation).title("User Location");
                 userMarker.icon(BitmapDescriptorFactory.fromResource(R.drawable.usericon));
@@ -297,8 +297,8 @@ import java.util.ArrayList;
 
             } else {
 
-                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
-                Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+                Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 LatLng userLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
                 mMap.clear();
                 MarkerOptions userMarker= new MarkerOptions().position(userLocation).title("User Location");
