@@ -11,6 +11,7 @@ public class Cochera {
     private Double Longitud;
     private String Telefono;
     private String capacidad;
+    private String cuposDisponibles;
 
     public Double getLatitud() {
         return latitud;
@@ -54,4 +55,11 @@ public class Cochera {
 
     private ArrayList<String> lista;
 
+    public String getCuposDisponibles() {
+        return cuposDisponibles;
+    }
+
+    public void setCuposDisponibles(String cuposDisponibles) {
+        this.cuposDisponibles = cuposDisponibles;
+    }
 }

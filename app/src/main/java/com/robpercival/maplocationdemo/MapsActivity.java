@@ -11,10 +11,16 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -33,16 +39,50 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+
+
+
+   public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     LocationManager locationManager;
     LocationListener locationListener;
+    private ArrayList<Cochera> listaCocheras;
+    private String[] mOpcionesTitles;
+    private DrawerLayout mDrawerLayout;
+    private ListView mDrawerList;
+    private CharSequence mTitle;
+    static final String url = "http://54.164.83.170:3200/todaCocheraConServicios";
+
+
+        public void actualizar(View view){
+        mMap.clear();
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            /*listaCocheras =new ArrayList<Cochera>(); */
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+
+            Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+            LatLng userLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+
+            MarkerOptions userMarker= new MarkerOptions().position(userLocation).title("User Location");
+            userMarker.icon(BitmapDescriptorFactory.fromResource( R.drawable.usericon));
+
+            mMap.addMarker(userMarker);
+            CargarUbicacionCocheras cargarUbicacionCocheras= new CargarUbicacionCocheras();
+            cargarUbicacionCocheras.execute("");
+        }
+
+
+
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -59,6 +99,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +110,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        mOpcionesTitles = getResources().getStringArray(R.array.opciones_array);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+
+        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
+                R.layout.drawer_list_item, mOpcionesTitles));
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+    }
+
+    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            selectItem(position);
+        }
+    }
+    private void selectItem(int position) {
+        // Create a new fragment and specify the planet to show based on position
 
     }
 
@@ -109,8 +170,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
              String a=null;
              String ss=" ";
             try {
+                /* InputStream is = getAssets().open("variasCocheras.json");
+                int size = is.available();
+                byte[] buffer = new byte[size];
+                is.read(buffer);
+                is.close();
+                a = new String(buffer, "UTF-8"); */
                 JSONArray lugares= new JSONArray(result);
-                ArrayList<Cochera> cocheras = new ArrayList<Cochera>();
+                ArrayList<Cochera> listaCocheras = new ArrayList<Cochera>();
+
                 for(int i=0; i<lugares.length();i++){
                     Cochera coch=new Cochera();
                     JSONObject jsonObject= lugares.getJSONObject(i);
@@ -121,32 +189,38 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     coch.setLatitud(latitud);
                     coch.setLongitud(longitud);
                     coch.setCapacidad(jsonObject.getString("capacidad"));
-
+                    Integer x =Integer.valueOf(jsonObject.getString("cupos_disp"));
+                    listaCocheras.add(coch);
                     ArrayList<String> listaservicios= new ArrayList<String>() ;
                     for (int j=0; j<servicios.length();j++){
                         JSONObject jsonObjects= servicios.getJSONObject(j);
 
                         if(jsonObjects.getBoolean("estado")==true){
-                            JSONObject detalleservicio= jsonObjects.getJSONObject("tipoServicio");
-                            listaservicios.add(detalleservicio.getString("nombre")+": Precio: S/. "+ jsonObjects.getString("precio_hora"));
+                                JSONObject detalleservicio = jsonObjects.getJSONObject("tipoServicio");
+                                listaservicios.add(detalleservicio.getString("nombre") + ": Precio: S/. " + jsonObjects.getString("precio_hora"));
+                                if(x <15) {
+                                    Marker mark = mMap.addMarker(new MarkerOptions().title(jsonObject.getString("nombre")).position(new LatLng(latitud,
+                                                    longitud)).snippet("Cupos : " + jsonObject.getString("cupos_disp")
+                                            ).icon(BitmapDescriptorFactory.fromResource(R.drawable.coche))
+                                    );
+                                    mark.setTag(listaservicios);
+                                }
 
-                            //ss= ss+" Servicio: "+detalleservicio.getString("nombre")+ " Precio: "+ jsonObjects.getString("precio_hora");
-                             Marker mark = mMap.addMarker(new MarkerOptions().title(jsonObject.getString("nombre")).position(new LatLng(latitud,
-                                    longitud)).snippet("Capacidad : " + jsonObject.getString("capacidad")
-
-                            ).icon(BitmapDescriptorFactory.fromResource(R.drawable.coche))
-
-                            );
-                            mark.setTag(listaservicios);
+                                else {Marker mark = mMap.addMarker(new MarkerOptions().title(jsonObject.getString("nombre")).position(new LatLng(latitud,
+                                                    longitud)).snippet("Cupos : " + jsonObject.getString("cupos_disp")
+                                            ).icon(BitmapDescriptorFactory.fromResource(R.drawable.cochera))
+                                    );
+                                    mark.setTag(listaservicios);
+                            }
                         }
 
                     }
                 }
 
             } catch (JSONException e) {
-                Toast.makeText(getApplication(),"Meq", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplication(),"No se pudo cargar", Toast.LENGTH_SHORT).show();
             }
-        }
+         }
     }
 
 
@@ -180,7 +254,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 userMarker.icon(BitmapDescriptorFactory.fromResource( R.drawable.usericon));
                 userMarker.draggable(false);
                 mMap.addMarker(userMarker);
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,10));
 
             }
 
@@ -202,9 +276,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         if (Build.VERSION.SDK_INT < 23) {
 
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-            CargarUbicacionCocheras cargarUbicacionCocheras= new CargarUbicacionCocheras();
-            cargarUbicacionCocheras.execute("Hola");
+
+                Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                LatLng userLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+                MarkerOptions userMarker = new MarkerOptions().position(userLocation).title("User Location");
+                userMarker.icon(BitmapDescriptorFactory.fromResource(R.drawable.usericon));
+                mMap.addMarker(userMarker);
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,15));
+                CargarUbicacionCocheras cargarUbicacionCocheras = new CargarUbicacionCocheras();
+                cargarUbicacionCocheras.execute(url);
 
         } else {
 
@@ -212,13 +292,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
                 CargarUbicacionCocheras cargarUbicacionCocheras= new CargarUbicacionCocheras();
-                cargarUbicacionCocheras.execute("https://cocheras-lb.herokuapp.com/todaCocheraConServicios");
+                cargarUbicacionCocheras.execute(url);
 
 
             } else {
 
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-                Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+                Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                 LatLng userLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
                 mMap.clear();
                 MarkerOptions userMarker= new MarkerOptions().position(userLocation).title("User Location");
@@ -226,14 +306,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.addMarker(userMarker);
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,10));
                 CargarUbicacionCocheras cargarUbicacionCocheras= new CargarUbicacionCocheras();
-                cargarUbicacionCocheras.execute("https://cocheras-lb.herokuapp.com/todaCocheraConServicios");
-            }
+                cargarUbicacionCocheras.execute(url);
+        }
 
 
         }
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             public void onInfoWindowClick(Marker marker) {
-                if(marker.getTitle()!="User Location") {
+                if(!marker.getTitle().equals("User Location")) {
                     ArrayList<String> info = (ArrayList<String>) marker.getTag();
                     Intent intent = new Intent(MapsActivity.this, DetalleServicio.class);
                     intent.putExtra("LISTA", info);
@@ -242,6 +322,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
         });
+
 
 
     }
