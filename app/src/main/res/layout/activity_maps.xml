@@ -12,6 +12,21 @@
     android:name="com.google.android.gms.maps.SupportMapFragment"
         tools:layout="@layout/fragment_map"/>
 
+    <FrameLayout
+        android:id="@+id/content_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            style="@android:style/Widget.DeviceDefault.ImageButton"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/cast_expanded_controller_ad_container_white_stripe_color"
+            android:onClick="menu"
+            android:src="@drawable/iconmenu"
+            android:visibility="visible" />
+    </FrameLayout>
 
 
         <ListView android:id="@+id/left_drawer"
