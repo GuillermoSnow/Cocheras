@@ -19,7 +19,5 @@ public class ListaServicios extends AppCompatActivity {
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new Adaptador((ArrayList<String>) getIntent().getSerializableExtra("LISTA"));
-        mRecyclerView.setAdapter(mAdapter);
     }
 }

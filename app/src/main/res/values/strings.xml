@@ -5,7 +5,7 @@
     <string name="autocomplete_hint">Search a Place</string>
     <string name="title_activity_prueba">Prueba</string>
     <string name="title_activity_gg">gg</string>
-    <string-array name="opciones_array" >
+    <string-array name="opciones_array">
         <item>Sobre Nosotros
         </item>
         <item>Términos y Condiciones </item>

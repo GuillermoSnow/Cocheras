@@ -1,48 +1,57 @@
 package com.robpercival.maplocationdemo;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Guillermo on 1/10/2017.
  */
 
-    public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolder>{
-    private  ArrayList<String> mdata;
+    public class Adaptador extends BaseAdapter{
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        // each data item is just a string in this case
-        public TextView mTextView;
-        public ViewHolder(TextView v) {
-            super(v);
-            mTextView = v;
-        }
-    }
+    private Context mContext;
+    private List<Informacion> lista;
 
-    public Adaptador( ArrayList<String> myDataset) {
-        mdata = myDataset;
-    }
-
-
-    @Override
-    public Adaptador.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        TextView v = (TextView) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.activity_detalle_servicio, parent, false);
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+    public Adaptador(Context mContext, List<Informacion> lista) {
+        this.mContext = mContext;
+        this.lista = lista;
     }
 
     @Override
-    public void onBindViewHolder(Adaptador.ViewHolder holder, int position) {
-        holder.mTextView.setText(mdata.get(position));
+    public int getCount() {
+       return lista.size();
     }
 
     @Override
-    public int getItemCount() {
-        return mdata.size();
+    public Object getItem(int position) {
+        return lista.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        View v= View.inflate(mContext,R.layout.aboutlist,null);
+        TextView tvNombre= (TextView)v.findViewById(R.id.nombre);
+        TextView tvdescripcion= (TextView)v.findViewById(R.id.descripcion);
+        TextView tvextra= (TextView)v.findViewById(R.id.extra);
+        TextView tvaddress= (TextView)v.findViewById(R.id.address);
+        tvNombre.setText(lista.get(position).getNombre());
+        tvdescripcion.setText(lista.get(position).getDescripcion());
+        tvextra.setText(lista.get(position).getExtra());
+        tvaddress.setText(lista.get(position).getAddress());
+        v.setTag(lista.get(position).getId());
+        return v;
     }
 }

@@ -1,7 +1,6 @@
 package com.robpercival.maplocationdemo;
 
 import android.Manifest;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,13 +11,14 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -54,7 +54,6 @@ import java.util.ArrayList;
     private GoogleMap mMap;
     LocationManager locationManager;
     LocationListener locationListener;
-    private ArrayList<Cochera> listaCocheras;
     private String[] mOpcionesTitles;
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
@@ -68,21 +67,18 @@ import java.util.ArrayList;
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             /*listaCocheras =new ArrayList<Cochera>(); */
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-
             Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
             LatLng userLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
-
             MarkerOptions userMarker= new MarkerOptions().position(userLocation).title("User Location");
             userMarker.icon(BitmapDescriptorFactory.fromResource( R.drawable.usericon));
-
             mMap.addMarker(userMarker);
             CargarUbicacionCocheras cargarUbicacionCocheras= new CargarUbicacionCocheras();
             cargarUbicacionCocheras.execute("");
         }
+    }
 
-
-
+    public void menu(View view){
+        mDrawerLayout.openDrawer(mDrawerList);
     }
 
     @Override
@@ -126,24 +122,37 @@ import java.util.ArrayList;
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             selectItem(position);
+
         }
     }
     private void selectItem(int position) {
         // Create a new fragment
-        Fragment fragment = new InfoFragment();
+         /* android.app.Fragment fragment = new android.app.Fragment();
         Bundle args= new Bundle();
         args.putInt(InfoFragment.ARG_INFOR_NUMBER, position);
         fragment.setArguments(args);
         FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();*/
+        mDrawerList.setItemChecked(position,true);
+        if(position==0) {
+            Intent meq = new Intent(MapsActivity.this, SobreNosotros.class);
+            startActivity(meq);
+        }
+        mDrawerLayout.closeDrawer(mDrawerList);
 
     }
 
-    public static class InfoFragment extends  Fragment{
+    public static class InfoFragment extends android.app.Fragment{
         public static final String ARG_INFOR_NUMBER = "info_number";
 
         public InfoFragment(){
         }
+        public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+            View rootView= inflater.inflate(R.layout.servicio_detalle,container,false);
+            int i= getArguments().getInt(ARG_INFOR_NUMBER);
 
+            return rootView;
+        }
 
     }
 
@@ -206,13 +215,16 @@ import java.util.ArrayList;
                     coch.setCapacidad(jsonObject.getString("capacidad"));
                     Integer x =Integer.valueOf(jsonObject.getString("cupos_disp"));
                     listaCocheras.add(coch);
-                    ArrayList<String> listaservicios= new ArrayList<String>() ;
+                    ArrayList<Servicio> listaservicios= new ArrayList<Servicio>() ;
                     for (int j=0; j<servicios.length();j++){
-                        JSONObject jsonObjects= servicios.getJSONObject(j);
+                        JSONObject servicio= servicios.getJSONObject(j);
 
-                        if(jsonObjects.getBoolean("estado")==true){
-                                JSONObject detalleservicio = jsonObjects.getJSONObject("tipoServicio");
-                                listaservicios.add(detalleservicio.getString("nombre") + ": Precio: S/. " + jsonObjects.getString("precio_hora"));
+                        if(servicio.getBoolean("estado")==true){
+                                JSONObject detalleservicio = servicio.getJSONObject("tipoServicio");
+                                Servicio service= new Servicio();
+                                service.setNombre(detalleservicio.getString("nombre"));
+                                service.setPrecio(servicio.getString("precio_hora"));
+                                listaservicios.add(service);
                                 if(x <15) {
                                     Marker mark = mMap.addMarker(new MarkerOptions().title(jsonObject.getString("nombre")).position(new LatLng(latitud,
                                                     longitud)).snippet("Cupos : " + jsonObject.getString("cupos_disp")
@@ -306,16 +318,21 @@ import java.util.ArrayList;
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                LatLng userLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+                MarkerOptions userMarker = new MarkerOptions().position(userLocation).title("User Location");
+                userMarker.icon(BitmapDescriptorFactory.fromResource(R.drawable.usericon));
+                mMap.addMarker(userMarker);
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,15));
                 CargarUbicacionCocheras cargarUbicacionCocheras= new CargarUbicacionCocheras();
                 cargarUbicacionCocheras.execute(url);
 
 
             } else {
 
-                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
-                Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+                Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 LatLng userLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
-                mMap.clear();
                 MarkerOptions userMarker= new MarkerOptions().position(userLocation).title("User Location");
                 userMarker.icon(BitmapDescriptorFactory.fromResource( R.drawable.usericon));
                 mMap.addMarker(userMarker);
@@ -329,7 +346,7 @@ import java.util.ArrayList;
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             public void onInfoWindowClick(Marker marker) {
                 if(!marker.getTitle().equals("User Location")) {
-                    ArrayList<String> info = (ArrayList<String>) marker.getTag();
+                    ArrayList<Servicio> info = (ArrayList<Servicio>) marker.getTag();
                     Intent intent = new Intent(MapsActivity.this, DetalleServicio.class);
                     intent.putExtra("LISTA", info);
                     startActivity(intent);
