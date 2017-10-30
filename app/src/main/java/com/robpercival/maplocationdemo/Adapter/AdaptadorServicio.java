@@ -1,10 +1,13 @@
-package com.robpercival.maplocationdemo;
+package com.robpercival.maplocationdemo.Adapter;
 
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import com.robpercival.maplocationdemo.R;
+import com.robpercival.maplocationdemo.Model.Servicio;
 
 import java.util.List;
 
@@ -55,7 +58,7 @@ public class AdaptadorServicio extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View v= View.inflate(mContext,R.layout.servicio_detalle,null);
+        View v= View.inflate(mContext, R.layout.servicio_detalle,null);
         TextView tvNombre= (TextView)v.findViewById(R.id.nombreServicio);
         TextView tvdescripcion= (TextView)v.findViewById(R.id.precio);
         tvNombre.setText(lista.get(position).getNombre());

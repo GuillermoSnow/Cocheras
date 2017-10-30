@@ -1,4 +1,4 @@
-package com.robpercival.maplocationdemo;
+package com.robpercival.maplocationdemo.Model;
 
 /**
  * Created by Guillermo on 29/10/2017.

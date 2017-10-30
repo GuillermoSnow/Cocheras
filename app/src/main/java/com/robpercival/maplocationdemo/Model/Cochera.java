@@ -1,4 +1,4 @@
-package com.robpercival.maplocationdemo;
+package com.robpercival.maplocationdemo.Model;
 
 import java.util.ArrayList;
 

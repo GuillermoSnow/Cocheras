@@ -1,8 +1,12 @@
-package com.robpercival.maplocationdemo;
+package com.robpercival.maplocationdemo.Activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ListView;
+
+import com.robpercival.maplocationdemo.Adapter.Adaptador;
+import com.robpercival.maplocationdemo.Model.Informacion;
+import com.robpercival.maplocationdemo.R;
 
 import java.util.ArrayList;
 import java.util.List;

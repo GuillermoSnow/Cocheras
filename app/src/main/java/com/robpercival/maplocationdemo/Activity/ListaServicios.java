@@ -1,9 +1,11 @@
-package com.robpercival.maplocationdemo;
+package com.robpercival.maplocationdemo.Activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+
+import com.robpercival.maplocationdemo.R;
 
 import java.util.ArrayList;
 

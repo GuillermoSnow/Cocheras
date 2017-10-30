@@ -1,4 +1,4 @@
-package com.robpercival.maplocationdemo;
+package com.robpercival.maplocationdemo.Activity;
 
 import android.Manifest;
 import android.content.Context;
@@ -33,6 +33,9 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.robpercival.maplocationdemo.Model.Cochera;
+import com.robpercival.maplocationdemo.R;
+import com.robpercival.maplocationdemo.Model.Servicio;
 
 import org.json.JSONArray;
 import org.json.JSONException;

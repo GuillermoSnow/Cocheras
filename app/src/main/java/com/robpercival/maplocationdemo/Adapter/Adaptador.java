@@ -1,14 +1,14 @@
-package com.robpercival.maplocationdemo;
+package com.robpercival.maplocationdemo.Adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import com.robpercival.maplocationdemo.Model.Informacion;
+import com.robpercival.maplocationdemo.R;
+
 import java.util.List;
 
 /**
@@ -42,7 +42,7 @@ import java.util.List;
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View v= View.inflate(mContext,R.layout.aboutlist,null);
+        View v= View.inflate(mContext, R.layout.aboutlist,null);
         TextView tvNombre= (TextView)v.findViewById(R.id.nombre);
         TextView tvdescripcion= (TextView)v.findViewById(R.id.descripcion);
         TextView tvextra= (TextView)v.findViewById(R.id.extra);
