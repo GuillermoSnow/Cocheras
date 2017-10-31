@@ -1,17 +1,27 @@
 package com.robpercival.maplocationdemo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by Guillermo on 18/06/2017.
  */
 
-public class Cochera {
+public class Cochera implements Serializable{
     private Double latitud;
     private Double Longitud;
     private String Telefono;
     private String capacidad;
     private String cuposDisponibles;
+    private ArrayList<Servicio> listaServicio;
+
+    public ArrayList<Servicio> getListaServicio() {
+        return listaServicio;
+    }
+
+    public void setListaServicio(ArrayList<Servicio> listaServicio) {
+        this.listaServicio = listaServicio;
+    }
 
     public Double getLatitud() {
         return latitud;

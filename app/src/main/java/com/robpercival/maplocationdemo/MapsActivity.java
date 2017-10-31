@@ -51,6 +51,8 @@ import java.util.ArrayList;
 
    public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
+
+
     private GoogleMap mMap;
     LocationManager locationManager;
     LocationListener locationListener;
@@ -58,7 +60,35 @@ import java.util.ArrayList;
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private CharSequence mTitle;
-    static final String url = "http://54.164.83.170:3200/todaCocheraConServicios";
+    private String lat;
+    private String lon;
+    private String url;
+
+       public String getLat() {
+           return lat;
+       }
+
+       public void setLat(String lat) {
+           this.lat = lat;
+       }
+
+       public String getLon() {
+           return lon;
+       }
+
+       public void setLon(String lon) {
+           this.lon = lon;
+       }
+
+       public String getUrl() {
+           return "http://54.89.248.15:3000/parking/nearby?lat="+getLat()+"&lng="+getLon();
+       }
+
+       public void setUrl(String url) {
+           this.url = url;
+       }
+
+
 
 
         public void actualizar(View view){
@@ -107,6 +137,7 @@ import java.util.ArrayList;
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
         mOpcionesTitles = getResources().getStringArray(R.array.opciones_array);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
@@ -167,7 +198,6 @@ import java.util.ArrayList;
             try {
                 url = new URL(urls[0]);
                 urlConnection = (HttpURLConnection) url.openConnection();
-
                 InputStream in = urlConnection.getInputStream();
 
                 InputStreamReader reader = new InputStreamReader(in);
@@ -206,42 +236,47 @@ import java.util.ArrayList;
                 for(int i=0; i<lugares.length();i++){
                     Cochera coch=new Cochera();
                     JSONObject jsonObject= lugares.getJSONObject(i);
-                    JSONObject coordenada= jsonObject.getJSONObject("coordenadas");
-                    JSONArray servicios= new JSONArray(jsonObject.getString("servicioCocheras"));
-                    double latitud= Double.parseDouble(coordenada.getString("lat"));
-                    double longitud=Double.parseDouble(coordenada.getString("lng"));
+                    JSONObject location= jsonObject.getJSONObject("location");
+                    JSONArray servicios= new JSONArray(jsonObject.getString("services"));
+                    JSONArray coordenada= new JSONArray(location.getString("coordinates"));
+                    double latitud= Double.parseDouble(coordenada.get(0).toString());
+                    double longitud=Double.parseDouble(coordenada.get(1).toString());
+                    Log.i("kjaldjksjda",coordenada.get(0).toString());
                     coch.setLatitud(latitud);
                     coch.setLongitud(longitud);
-                    coch.setCapacidad(jsonObject.getString("capacidad"));
-                    Integer x =Integer.valueOf(jsonObject.getString("cupos_disp"));
+                    coch.setCapacidad(jsonObject.getString("capacity"));
+                    Integer x =Integer.valueOf(jsonObject.getString("current_used"));
                     listaCocheras.add(coch);
                     ArrayList<Servicio> listaservicios= new ArrayList<Servicio>() ;
                     for (int j=0; j<servicios.length();j++){
                         JSONObject servicio= servicios.getJSONObject(j);
 
-                        if(servicio.getBoolean("estado")==true){
-                                JSONObject detalleservicio = servicio.getJSONObject("tipoServicio");
+                        if(servicio.getBoolean("status")==true){
+                                ;
                                 Servicio service= new Servicio();
-                                service.setNombre(detalleservicio.getString("nombre"));
-                                service.setPrecio(servicio.getString("precio_hora"));
+                                service.setNombre(servicio.getString("name"));
+                                service.setPrecio(servicio.getString("cost_hour"));
                                 listaservicios.add(service);
-                                if(x <15) {
-                                    Marker mark = mMap.addMarker(new MarkerOptions().title(jsonObject.getString("nombre")).position(new LatLng(latitud,
-                                                    longitud)).snippet("Cupos : " + jsonObject.getString("cupos_disp")
-                                            ).icon(BitmapDescriptorFactory.fromResource(R.drawable.coche))
-                                    );
-                                    mark.setTag(listaservicios);
-                                }
 
-                                else {Marker mark = mMap.addMarker(new MarkerOptions().title(jsonObject.getString("nombre")).position(new LatLng(latitud,
-                                                    longitud)).snippet("Cupos : " + jsonObject.getString("cupos_disp")
-                                            ).icon(BitmapDescriptorFactory.fromResource(R.drawable.cochera))
-                                    );
-                                    mark.setTag(listaservicios);
-                            }
                         }
 
                     }
+                    coch.setListaServicio(listaservicios);
+                    if(x <15) {
+                        Marker mark = mMap.addMarker(new MarkerOptions().title(jsonObject.getString("name")).position(new LatLng(latitud,
+                                        longitud)).snippet("Cupos:" + jsonObject.getString("current_used")
+                                ).icon(BitmapDescriptorFactory.fromResource(R.drawable.coche))
+                        );
+                        mark.setTag(coch);
+                    }
+
+                    else {Marker mark = mMap.addMarker(new MarkerOptions().title(jsonObject.getString("name")).position(new LatLng(latitud,
+                                    longitud)).snippet("Cupos : " + jsonObject.getString("current_used")
+                            ).icon(BitmapDescriptorFactory.fromResource(R.drawable.cochera))
+                    );
+                        mark.setTag(coch);
+                    }
+
                 }
 
             } catch (JSONException e) {
@@ -310,8 +345,10 @@ import java.util.ArrayList;
                 userMarker.icon(BitmapDescriptorFactory.fromResource(R.drawable.usericon));
                 mMap.addMarker(userMarker);
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,15));
+                setLat(Double.toString(userLocation.latitude));
+                setLon(Double.toString(userLocation.longitude));
                 CargarUbicacionCocheras cargarUbicacionCocheras = new CargarUbicacionCocheras();
-                cargarUbicacionCocheras.execute(url);
+                cargarUbicacionCocheras.execute(getUrl());
 
         } else {
 
@@ -325,7 +362,7 @@ import java.util.ArrayList;
                 mMap.addMarker(userMarker);
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,15));
                 CargarUbicacionCocheras cargarUbicacionCocheras= new CargarUbicacionCocheras();
-                cargarUbicacionCocheras.execute(url);
+                cargarUbicacionCocheras.execute(getUrl());
 
 
             } else {
@@ -338,7 +375,7 @@ import java.util.ArrayList;
                 mMap.addMarker(userMarker);
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,10));
                 CargarUbicacionCocheras cargarUbicacionCocheras= new CargarUbicacionCocheras();
-                cargarUbicacionCocheras.execute(url);
+                cargarUbicacionCocheras.execute(getUrl());
         }
 
 
@@ -346,9 +383,9 @@ import java.util.ArrayList;
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             public void onInfoWindowClick(Marker marker) {
                 if(!marker.getTitle().equals("User Location")) {
-                    ArrayList<Servicio> info = (ArrayList<Servicio>) marker.getTag();
+                    Cochera info = (Cochera) marker.getTag();
                     Intent intent = new Intent(MapsActivity.this, DetalleServicio.class);
-                    intent.putExtra("LISTA", info);
+                    intent.putExtra("Cochera", info);
                     startActivity(intent);
                 }
 
