@@ -1,4 +1,4 @@
-package com.robpercival.maplocationdemo;
+package com.robpercival.maplocationdemo.Activity;
 
 import android.Manifest;
 import android.content.Context;
@@ -33,6 +33,10 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.robpercival.maplocationdemo.Activity.Container.ContainerCocheraActivity;
+import com.robpercival.maplocationdemo.Model.Cochera;
+import com.robpercival.maplocationdemo.Model.Servicio;
+import com.robpercival.maplocationdemo.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -344,7 +348,9 @@ import java.util.ArrayList;
 
         if (Build.VERSION.SDK_INT < 23) {
 
-
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
                 Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                 LatLng userLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
                 ultimaPosicion=userLocation;
@@ -390,9 +396,10 @@ import java.util.ArrayList;
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             public void onInfoWindowClick(Marker marker) {
                 if(!marker.getTitle().equals("User Location")) {
-                    Cochera info = (Cochera) marker.getTag();
-                    Intent intent = new Intent(MapsActivity.this, DetalleServicio.class);
-                    intent.putExtra("Cochera", info);
+//                    Cochera info = (Cochera) marker.getTag();
+                    /*Intent intent = new Intent(MapsActivity.this, DetalleServicio.class);
+                    intent.putExtra("Cochera", info);*/
+                    Intent intent = new Intent(MapsActivity.this, ContainerCocheraActivity.class);
                     startActivity(intent);
                 }
 

@@ -32,6 +32,7 @@
 
         <activity
             android:name=".Activity.MapsActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/title_activity_maps">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,8 +42,14 @@
         </activity>
         <activity android:name=".Activity.DetalleServicio" />
         <activity android:name=".Activity.ListaServicios" />
-        <activity android:name=".Activity.SobreNosotros">
+        <activity android:name=".Activity.SobreNosotros" />
 
+        <activity android:name=".Activity.Container.ContainerCocheraActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <!--android:parentActivityName=".Activity.MapsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Activity.MapsActivity" />-->
         </activity>
     </application>
 

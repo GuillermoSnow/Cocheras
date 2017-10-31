@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.robpercival.maplocationdemo.Adapter.AdaptadorServicio;
+import com.robpercival.maplocationdemo.Model.Cochera;
 import com.robpercival.maplocationdemo.R;
 import com.robpercival.maplocationdemo.Model.Servicio;
 

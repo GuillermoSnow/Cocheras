@@ -11,4 +11,22 @@
         <item>Términos y Condiciones </item>
 
     </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="tab_detalleCochera">Detalle Cochera</string>
+    <string name="tab_detalleServicios">Detalle Servicios</string>
+    <string name="nameCochera_prueba">Los Jardines</string>
+    <string name="capacidad_cochera_prueba">Capacidad Actual</string>
+    <string name="cuposDisponibleTest">25</string>
+    <string name="direccion_cocheraTest">Av. Canadá 4071, San Luis</string>
+    <string name="telefono_cocheraTest">997595078</string>
+    <string name="email_cocheraTest">los.jardines@gmail.com</string>
+    <string name="nameServicio_CocheraTest">Lavado de Vehiculo</string>
+    <string name="precioServicio_CocheraTest">15.00</string>
+    <string name="soles">S/.</string>
+    <string name="precioxHora">x Hora</string>
+    <string name="estadoServicio_CocheraTest">abierto</string>
+
 </resources>
