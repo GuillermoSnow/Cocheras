@@ -1,4 +1,4 @@
-package com.robpercival.maplocationdemo.Activity;
+package com.robpercival.maplocationdemo;
 
 import android.Manifest;
 import android.content.Context;
@@ -33,9 +33,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.robpercival.maplocationdemo.Model.Cochera;
-import com.robpercival.maplocationdemo.R;
-import com.robpercival.maplocationdemo.Model.Servicio;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -50,7 +47,11 @@ import java.net.URL;
 import java.util.ArrayList;
 
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+
+
+   public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+
+
 
     private GoogleMap mMap;
     LocationManager locationManager;
@@ -59,26 +60,58 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private CharSequence mTitle;
-    static final String url = "http://54.164.83.170:3200/todaCocheraConServicios";
+    private String lat;
+    private String lon;
+    private String url;
+    private LatLng ultimaPosicion;
+
+       public LatLng getUltimaPosicion() {
+           return ultimaPosicion;
+       }
+
+       public void setUltimaPosicion(LatLng ultimaPosicion) {
+           this.ultimaPosicion = ultimaPosicion;
+       }
+
+       public String getLat() {
+           return lat;
+       }
+
+       public void setLat(String lat) {
+           this.lat = lat;
+       }
+
+       public String getLon() {
+           return lon;
+       }
+
+       public void setLon(String lon) {
+           this.lon = lon;
+       }
+
+       public String getUrl() {
+           return "http://54.89.248.15:3000/parking/nearby?lat="+getLat()+"&lng="+getLon();
+       }
+
+       public void setUrl(String url) {
+           this.url = url;
+       }
 
 
-    public void actualizar(View view) {
-        mMap.clear();
-        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            /*listaCocheras =new ArrayList<Cochera>(); */
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-            Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            LatLng userLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
-            MarkerOptions userMarker = new MarkerOptions().position(userLocation).title("User Location");
+
+
+        public void actualizar(View view){
+            mMap.clear();
+            MarkerOptions userMarker = new MarkerOptions().position(ultimaPosicion).title("User Location");
             userMarker.icon(BitmapDescriptorFactory.fromResource(R.drawable.usericon));
             mMap.addMarker(userMarker);
+            setLat(Double.toString(ultimaPosicion.latitude));
+            setLon(Double.toString(ultimaPosicion.longitude));
             CargarUbicacionCocheras cargarUbicacionCocheras = new CargarUbicacionCocheras();
-            cargarUbicacionCocheras.execute("");
-        }
+            cargarUbicacionCocheras.execute(getUrl());
     }
 
-    public void menu(View view) {
+    public void menu(View view){
         mDrawerLayout.openDrawer(mDrawerList);
     }
 
@@ -98,6 +131,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,6 +141,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
         mOpcionesTitles = getResources().getStringArray(R.array.opciones_array);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
@@ -125,7 +160,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         }
     }
-
     private void selectItem(int position) {
         // Create a new fragment
          /* android.app.Fragment fragment = new android.app.Fragment();
@@ -134,8 +168,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         fragment.setArguments(args);
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();*/
-        mDrawerList.setItemChecked(position, true);
-        if (position == 0) {
+        mDrawerList.setItemChecked(position,true);
+        if(position==0) {
             Intent meq = new Intent(MapsActivity.this, SobreNosotros.class);
             startActivity(meq);
         }
@@ -143,15 +177,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    public static class InfoFragment extends android.app.Fragment {
+    public static class InfoFragment extends android.app.Fragment{
         public static final String ARG_INFOR_NUMBER = "info_number";
 
-        public InfoFragment() {
+        public InfoFragment(){
         }
-
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.servicio_detalle, container, false);
-            int i = getArguments().getInt(ARG_INFOR_NUMBER);
+        public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+            View rootView= inflater.inflate(R.layout.servicio_detalle,container,false);
+            int i= getArguments().getInt(ARG_INFOR_NUMBER);
 
             return rootView;
         }
@@ -159,17 +192,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-    public class CargarUbicacionCocheras extends AsyncTask<String, Void, String> {
+    public class CargarUbicacionCocheras extends AsyncTask<String,Void,String>{
 
         @Override
         protected String doInBackground(String... urls) {
             String result = "";
             URL url;
-            HttpURLConnection urlConnection = null;
+            HttpURLConnection urlConnection= null;
             try {
                 url = new URL(urls[0]);
                 urlConnection = (HttpURLConnection) url.openConnection();
-
                 InputStream in = urlConnection.getInputStream();
 
                 InputStreamReader reader = new InputStreamReader(in);
@@ -190,11 +222,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             return result;
         }
 
-        @Override
+         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            String a = null;
-            String ss = " ";
+             String a=null;
+             String ss=" ";
             try {
                 /* InputStream is = getAssets().open("variasCocheras.json");
                 int size = is.available();
@@ -202,53 +234,62 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 is.read(buffer);
                 is.close();
                 a = new String(buffer, "UTF-8"); */
-                JSONArray lugares = new JSONArray(result);
+                JSONArray lugares= new JSONArray(result);
                 ArrayList<Cochera> listaCocheras = new ArrayList<Cochera>();
 
-                for (int i = 0; i < lugares.length(); i++) {
+                for(int i=0; i<lugares.length();i++) {
                     Cochera coch = new Cochera();
                     JSONObject jsonObject = lugares.getJSONObject(i);
-                    JSONObject coordenada = jsonObject.getJSONObject("coordenadas");
-                    JSONArray servicios = new JSONArray(jsonObject.getString("servicioCocheras"));
-                    double latitud = Double.parseDouble(coordenada.getString("lat"));
-                    double longitud = Double.parseDouble(coordenada.getString("lng"));
+                    if (jsonObject.getBoolean("status")){
+                    JSONObject location = jsonObject.getJSONObject("location");
+                    JSONArray servicios = new JSONArray(jsonObject.getString("services"));
+                    JSONArray coordenada = new JSONArray(location.getString("coordinates"));
+
+                    double latitud = Double.parseDouble(coordenada.get(0).toString());
+                    double longitud = Double.parseDouble(coordenada.get(1).toString());
+
                     coch.setLatitud(latitud);
                     coch.setLongitud(longitud);
-                    coch.setCapacidad(jsonObject.getString("capacidad"));
-                    Integer x = Integer.valueOf(jsonObject.getString("cupos_disp"));
+                    coch.setCapacidad(jsonObject.getString("capacity"));
+
+                    Integer x = Integer.valueOf(jsonObject.getString("current_used"));
+                    Integer capacidadActual = Integer.valueOf(jsonObject.getString("capacity")) - x;
                     listaCocheras.add(coch);
                     ArrayList<Servicio> listaservicios = new ArrayList<Servicio>();
                     for (int j = 0; j < servicios.length(); j++) {
                         JSONObject servicio = servicios.getJSONObject(j);
 
-                        if (servicio.getBoolean("estado") == true) {
-                            JSONObject detalleservicio = servicio.getJSONObject("tipoServicio");
+                        if (servicio.getBoolean("status") == true) {
+                            ;
                             Servicio service = new Servicio();
-                            service.setNombre(detalleservicio.getString("nombre"));
-                            service.setPrecio(servicio.getString("precio_hora"));
+                            service.setNombre(servicio.getString("name"));
+                            service.setPrecio(servicio.getString("cost_hour"));
                             listaservicios.add(service);
-                            if (x < 15) {
-                                Marker mark = mMap.addMarker(new MarkerOptions().title(jsonObject.getString("nombre")).position(new LatLng(latitud,
-                                                longitud)).snippet("Cupos : " + jsonObject.getString("cupos_disp")
-                                        ).icon(BitmapDescriptorFactory.fromResource(R.drawable.coche))
-                                );
-                                mark.setTag(listaservicios);
-                            } else {
-                                Marker mark = mMap.addMarker(new MarkerOptions().title(jsonObject.getString("nombre")).position(new LatLng(latitud,
-                                                longitud)).snippet("Cupos : " + jsonObject.getString("cupos_disp")
-                                        ).icon(BitmapDescriptorFactory.fromResource(R.drawable.cochera))
-                                );
-                                mark.setTag(listaservicios);
-                            }
+
                         }
 
                     }
+                    coch.setListaServicio(listaservicios);
+                    if (x < 15) {
+                        Marker mark = mMap.addMarker(new MarkerOptions().title(jsonObject.getString("name")).position(new LatLng(latitud,
+                                        longitud)).snippet("Cupos:" + capacidadActual.toString()
+                                ).icon(BitmapDescriptorFactory.fromResource(R.drawable.coche))
+                        );
+                        mark.setTag(coch);
+                    } else {
+                        Marker mark = mMap.addMarker(new MarkerOptions().title(jsonObject.getString("name")).position(new LatLng(latitud,
+                                        longitud)).snippet("Cupos : " + jsonObject.getString("current_used")
+                                ).icon(BitmapDescriptorFactory.fromResource(R.drawable.cochera))
+                        );
+                        mark.setTag(coch);
+                    }
+                }
                 }
 
             } catch (JSONException e) {
-                Toast.makeText(getApplication(), "No se pudo cargar", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplication(),"No se pudo cargar", Toast.LENGTH_SHORT).show();
             }
-        }
+         }
     }
 
 
@@ -278,11 +319,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
                 mMap.clear();
-                MarkerOptions userMarker = new MarkerOptions().position(userLocation).title("User Location");
-                userMarker.icon(BitmapDescriptorFactory.fromResource(R.drawable.usericon));
-                userMarker.draggable(false);
+                MarkerOptions userMarker= new MarkerOptions().position(userLocation).title("User Location");
+                userMarker.icon(BitmapDescriptorFactory.fromResource( R.drawable.usericon));
                 mMap.addMarker(userMarker);
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 10));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,10));
 
             }
 
@@ -305,17 +345,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (Build.VERSION.SDK_INT < 23) {
 
 
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                return;
-            }
                 Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                 LatLng userLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+                ultimaPosicion=userLocation;
                 MarkerOptions userMarker = new MarkerOptions().position(userLocation).title("User Location");
                 userMarker.icon(BitmapDescriptorFactory.fromResource(R.drawable.usericon));
                 mMap.addMarker(userMarker);
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,15));
+                setLat(Double.toString(userLocation.latitude));
+                setLon(Double.toString(userLocation.longitude));
                 CargarUbicacionCocheras cargarUbicacionCocheras = new CargarUbicacionCocheras();
-                cargarUbicacionCocheras.execute(url);
+                cargarUbicacionCocheras.execute(getUrl());
 
         } else {
 
@@ -329,7 +369,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.addMarker(userMarker);
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,15));
                 CargarUbicacionCocheras cargarUbicacionCocheras= new CargarUbicacionCocheras();
-                cargarUbicacionCocheras.execute(url);
+                cargarUbicacionCocheras.execute(getUrl());
 
 
             } else {
@@ -342,7 +382,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.addMarker(userMarker);
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,10));
                 CargarUbicacionCocheras cargarUbicacionCocheras= new CargarUbicacionCocheras();
-                cargarUbicacionCocheras.execute(url);
+                cargarUbicacionCocheras.execute(getUrl());
         }
 
 
@@ -350,9 +390,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             public void onInfoWindowClick(Marker marker) {
                 if(!marker.getTitle().equals("User Location")) {
-                    ArrayList<Servicio> info = (ArrayList<Servicio>) marker.getTag();
+                    Cochera info = (Cochera) marker.getTag();
                     Intent intent = new Intent(MapsActivity.this, DetalleServicio.class);
-                    intent.putExtra("LISTA", info);
+                    intent.putExtra("Cochera", info);
                     startActivity(intent);
                 }
 

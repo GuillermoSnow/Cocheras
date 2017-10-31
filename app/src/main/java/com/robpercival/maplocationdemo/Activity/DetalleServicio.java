@@ -23,8 +23,8 @@ public class DetalleServicio extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalle_servicio);
         //String capacidad=  getIntent().getStringExtra("LISTA");
-
-        ArrayList<Servicio> myList = (ArrayList<Servicio>) getIntent().getSerializableExtra("LISTA");
+        Cochera cochera= (Cochera) getIntent().getSerializableExtra("Cochera");
+        ArrayList<Servicio> myList = cochera.getListaServicio();
         ListView listavw= (ListView) findViewById(R.id.lista);
         lista= new ArrayList<Servicio>();
 

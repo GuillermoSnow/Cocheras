@@ -11,6 +11,7 @@
         android:layout_marginLeft="15dp"
         android:layout_marginTop="15dp"
         android:text="Nombre"
+
         android:textColor="@color/place_autocomplete_search_text"
         android:textSize="20dp" />
 
