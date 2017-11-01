@@ -255,9 +255,12 @@ import java.util.ArrayList;
                     coch.setLatitud(latitud);
                     coch.setLongitud(longitud);
                     coch.setCapacidad(jsonObject.getString("capacity"));
-
+                    coch.setNombre(jsonObject.getString("name"));
+                    coch.setTelefono(jsonObject.getString("phone_number"));
+                    coch.setDireccion(jsonObject.getString("address"));
                     Integer x = Integer.valueOf(jsonObject.getString("current_used"));
                     Integer capacidadActual = Integer.valueOf(jsonObject.getString("capacity")) - x;
+                    coch.setCuposTomados(jsonObject.getString("current_used"));
                     listaCocheras.add(coch);
                     ArrayList<Servicio> listaservicios = new ArrayList<Servicio>();
                     for (int j = 0; j < servicios.length(); j++) {
@@ -396,10 +399,11 @@ import java.util.ArrayList;
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             public void onInfoWindowClick(Marker marker) {
                 if(!marker.getTitle().equals("User Location")) {
-//                    Cochera info = (Cochera) marker.getTag();
+                       Cochera info = (Cochera) marker.getTag();
                     /*Intent intent = new Intent(MapsActivity.this, DetalleServicio.class);
                     intent.putExtra("Cochera", info);*/
                     Intent intent = new Intent(MapsActivity.this, ContainerCocheraActivity.class);
+                    intent.putExtra("Cochera", info);
                     startActivity(intent);
                 }
 

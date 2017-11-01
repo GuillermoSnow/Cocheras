@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.robpercival.maplocationdemo.Activity.MapsActivity;
 import com.robpercival.maplocationdemo.Adapter.AdapterServicioCocheraRecyclerView;
+import com.robpercival.maplocationdemo.Model.Cochera;
 import com.robpercival.maplocationdemo.Model.Servicio;
 import com.robpercival.maplocationdemo.R;
 
@@ -24,10 +25,20 @@ import java.util.ArrayList;
  */
 public class ServiciosFragment extends Fragment {
 
+    private Cochera cochera;
+
+    public Cochera getCochera() {
+        return cochera;
+    }
+
+    public void setCochera(Cochera cochera) {
+        this.cochera = cochera;
+    }
 
     public ServiciosFragment() {
         // Required empty public constructor
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,11 +60,12 @@ public class ServiciosFragment extends Fragment {
     }
 
     public ArrayList<Servicio> buidServicio(){
-        ArrayList<Servicio> servicios = new ArrayList<>();
-        servicios.add(new Servicio(1, "Lavado de Auto", "5.50"));
+
+        ArrayList<Servicio> servicios =cochera.getListaServicio();
+       /* servicios.add(new Servicio(1, "Lavado de Auto", "5.50"));
         servicios.add(new Servicio(2, "Lavado de Auto", "5.50"));
         servicios.add(new Servicio(3, "Lavado de Auto", "5.50"));
-//        servicios.add(new Servicio(4, "Lavado de Auto", "5.50"));
+//        servicios.add(new Servicio(4, "Lavado de Auto", "5.50"));*/
         return servicios;
     }
 

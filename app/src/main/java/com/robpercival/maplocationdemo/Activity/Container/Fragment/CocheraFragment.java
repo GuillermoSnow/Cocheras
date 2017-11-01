@@ -10,8 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.robpercival.maplocationdemo.Activity.MapsActivity;
+import com.robpercival.maplocationdemo.Model.Cochera;
 import com.robpercival.maplocationdemo.R;
 
 /**
@@ -19,6 +21,15 @@ import com.robpercival.maplocationdemo.R;
  */
 public class CocheraFragment extends Fragment {
 
+    private Cochera cochera;
+
+    public Cochera getCochera() {
+        return cochera;
+    }
+
+    public void setCochera(Cochera cochera) {
+        this.cochera = cochera;
+    }
 
     public CocheraFragment() {
         // Required empty public constructor
@@ -29,6 +40,17 @@ public class CocheraFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cochera, container, false);
+        TextView textViewNombre= (TextView)view.findViewById(R.id.nameCochera);
+        TextView textViewTelefono= (TextView)view.findViewById(R.id.telefono_cochera);
+        TextView textViewCapacidad= (TextView)view.findViewById(R.id.capacidad_cochera);
+        TextView textViewCupos= (TextView)view.findViewById(R.id.cuposDisponible_cochera);
+        TextView textViewDireccion=(TextView)view.findViewById(R.id.direccion_cochera);
+
+        textViewNombre.setText(getCochera().getNombre());
+        textViewTelefono.setText(getCochera().getTelefono());
+        textViewCapacidad.setText(getCochera().getCapacidad());
+        textViewDireccion.setText(getCochera().getDireccion());
+        textViewCupos.setText(getCochera().getCuposTomados());
         showToolbar("", true, view);
 
         return view;

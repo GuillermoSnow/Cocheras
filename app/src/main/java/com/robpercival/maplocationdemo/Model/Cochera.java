@@ -13,6 +13,36 @@ public class Cochera implements Serializable{
     private String Telefono;
     private String capacidad;
     private String cuposDisponibles;
+    private String cuposTomados;
+
+    public String getCuposTomados() {
+        return cuposTomados;
+    }
+
+    public void setCuposTomados(String cuposTomados) {
+        this.cuposTomados = cuposTomados;
+    }
+
+    private String nombre;
+    private String direccion;
+
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
     private ArrayList<Servicio> listaServicio;
 
     public ArrayList<Servicio> getListaServicio() {
