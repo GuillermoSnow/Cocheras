@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tabs>
+    <tab
+        id="@+id/detalleCochera"
+        title="@string/tab_detalleCochera"
+        barColorWhenSelected="@color/colorPrimary"
+        icon="@drawable/cocheradetalle"
+        />
+
+    <tab
+        id="@+id/detalleServicios"
+        title="@string/tab_detalleServicios"
+        barColorWhenSelected="@color/colorPrimary"
+        icon="@drawable/servicios"
+        />
+</tabs>

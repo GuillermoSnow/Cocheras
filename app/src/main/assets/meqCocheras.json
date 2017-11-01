@@ -1,0 +1,68 @@
+[  
+   {  
+      "id_empresa":"1",
+      "nombre":"Cochera fake",
+      "coordenadas":{  
+         "lat":-12.0557822,
+         "lng":-77.0873573
+      },
+      "direccion":"6543",
+      "telefono":943045308,
+      "estado":true,
+      "capacidad":2,
+      "username":"carlosrv999",
+      "email":"carlos.rv125@gmail.com",
+      "id":"593db9f7ab68921e430d54bb",
+      "servicioCocheras":[  
+         {  
+            "id_cochera":"593db9f7ab68921e430d54bb",
+            "id_servicio":"593dbb0cab68921e430d54bc",
+            "precio_hora":5,
+            "estado":true,
+            "id":"593dbbacab68921e430d54be",
+            "tipoServicio":{  
+               "nombre":"Alquiler de Cupo",
+               "id":"593dbb0cab68921e430d54bc"
+            }
+         },
+         {  
+            "id_cochera":"593db9f7ab68921e430d54bb",
+            "id_servicio":"593dbb42ab68921e430d54bd",
+            "precio_hora":10,
+            "estado":true,
+            "id":"593dcca71fe82a2f153e5bf1",
+            "tipoServicio":{  
+               "nombre":"Lavado de Autos",
+               "id":"593dbb42ab68921e430d54bd"
+            }
+         }
+      ]
+   },
+   {  
+      "nombre":"Cochera feik 2",
+      "coordenadas":{  
+         "lat":-12.0757556	,
+         "lng":-77.084586
+      },
+      "direccion":"av proceres lote 423",
+      "telefono":2822132,
+      "estado":true,
+      "capacidad":50,
+      "username":"elgishe",
+      "email":"memo.terrazas@gmail.com",
+      "id":"593dcd6f1fe82a2f153e5bf2",
+      "servicioCocheras":[  
+         {  
+            "id_cochera":"593dcd6f1fe82a2f153e5bf2",
+            "id_servicio":"593dbb0cab68921e430d54bc",
+            "precio_hora":5.5,
+            "estado":true,
+            "id":"593dcdd71fe82a2f153e5bf3",
+            "tipoServicio":{  
+               "nombre":"Alquiler de Cupo",
+               "id":"593dbb0cab68921e430d54bc"
+            }
+         }
+      ]
+   }
+]

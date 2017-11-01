@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="bottombar_height">70dp</dimen>
+    <dimen name="imageViewCochera">250dp</dimen>
+    <dimen name="appbarlayout_height">256dp</dimen>
+    <dimen name="margintop_titleCochera">30dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="textsize_nameCochera">25sp</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="textsize_capacidad_cochera">15sp</dimen>
+    <dimen name="marginleft_cuposDisponible_cochera">7dp</dimen>
+    <dimen name="marginleft_slash">2dp</dimen>
+    <dimen name="height_divider">1dp</dimen>
+    <dimen name="height_cardview">200dp</dimen>
+    <dimen name="cornerradius_cardview">4dp</dimen>
+    <dimen name="textsize_nameServicio_Cochera">20sp</dimen>
+    <dimen name="textsize_soles">20sp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+</resources>
