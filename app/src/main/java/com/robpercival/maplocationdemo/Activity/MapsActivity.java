@@ -286,7 +286,7 @@ import java.util.ArrayList;
                     } else {
                         Marker mark = mMap.addMarker(new MarkerOptions().title(jsonObject.getString("name")).position(new LatLng(latitud,
                                         longitud)).snippet("Cupos : " + jsonObject.getString("current_used")
-                                ).icon(BitmapDescriptorFactory.fromResource(R.drawable.cochera))
+                                ).icon(BitmapDescriptorFactory.fromResource(R.drawable.parking))
                         );
                         mark.setTag(coch);
                     }
