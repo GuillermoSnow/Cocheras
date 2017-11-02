@@ -51,9 +51,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 
-
-
-   public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
 
 
@@ -69,50 +67,48 @@ import java.util.ArrayList;
     private String url;
     private LatLng ultimaPosicion;
 
-       public LatLng getUltimaPosicion() {
-           return ultimaPosicion;
-       }
+    public LatLng getUltimaPosicion() {
+        return ultimaPosicion;
+    }
 
-       public void setUltimaPosicion(LatLng ultimaPosicion) {
-           this.ultimaPosicion = ultimaPosicion;
-       }
+    public void setUltimaPosicion(LatLng ultimaPosicion) {
+        this.ultimaPosicion = ultimaPosicion;
+    }
 
-       public String getLat() {
-           return lat;
-       }
+    public String getLat() {
+        return lat;
+    }
 
-       public void setLat(String lat) {
-           this.lat = lat;
-       }
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
 
-       public String getLon() {
-           return lon;
-       }
+    public String getLon() {
+        return lon;
+    }
 
-       public void setLon(String lon) {
-           this.lon = lon;
-       }
+    public void setLon(String lon) {
+        this.lon = lon;
+    }
 
-       public String getUrl() {
-           return "http://54.89.248.15:3000/parking/nearby?lat="+getLat()+"&lng="+getLon();
-       }
+    public String getUrl() {
+        return "http://54.89.248.15:3000/parking/nearby?lat=" + getLat() + "&lng=" + getLon();
+    }
 
-       public void setUrl(String url) {
-           this.url = url;
-       }
-
-
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
 
-        public void actualizar(View view){
-            mMap.clear();
-            MarkerOptions userMarker = new MarkerOptions().position(ultimaPosicion).title("User Location");
-            userMarker.icon(BitmapDescriptorFactory.fromResource(R.drawable.usericon));
-            mMap.addMarker(userMarker);
-            setLat(Double.toString(ultimaPosicion.latitude));
-            setLon(Double.toString(ultimaPosicion.longitude));
-            CargarUbicacionCocheras cargarUbicacionCocheras = new CargarUbicacionCocheras();
-            cargarUbicacionCocheras.execute(getUrl());
+    public void actualizar(View view) {
+        mMap.clear();
+        MarkerOptions userMarker = new MarkerOptions().position(ultimaPosicion).title("User Location");
+        userMarker.icon(BitmapDescriptorFactory.fromResource(R.drawable.usericon));
+        mMap.addMarker(userMarker);
+        setLat(Double.toString(ultimaPosicion.latitude));
+        setLon(Double.toString(ultimaPosicion.longitude));
+        CargarUbicacionCocheras cargarUbicacionCocheras = new CargarUbicacionCocheras();
+        cargarUbicacionCocheras.execute(getUrl());
     }
 
     public void menu(View view){
@@ -226,11 +222,11 @@ import java.util.ArrayList;
             return result;
         }
 
-         @Override
+        @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-             String a=null;
-             String ss=" ";
+            String a = null;
+            String ss = " ";
             try {
                 /* InputStream is = getAssets().open("variasCocheras.json");
                 int size = is.available();
@@ -245,58 +241,57 @@ import java.util.ArrayList;
                     Cochera coch = new Cochera();
                     JSONObject jsonObject = lugares.getJSONObject(i);
                     if (jsonObject.getBoolean("status")){
-                    JSONObject location = jsonObject.getJSONObject("location");
-                    JSONArray servicios = new JSONArray(jsonObject.getString("services"));
-                    JSONArray coordenada = new JSONArray(location.getString("coordinates"));
+                        JSONObject location = jsonObject.getJSONObject("location");
+                        JSONArray servicios = new JSONArray(jsonObject.getString("services"));
+                        JSONArray coordenada = new JSONArray(location.getString("coordinates"));
 
-                    double latitud = Double.parseDouble(coordenada.get(0).toString());
-                    double longitud = Double.parseDouble(coordenada.get(1).toString());
+                        double latitud = Double.parseDouble(coordenada.get(0).toString());
+                        double longitud = Double.parseDouble(coordenada.get(1).toString());
 
-                    coch.setLatitud(latitud);
-                    coch.setLongitud(longitud);
-                    coch.setCapacidad(jsonObject.getString("capacity"));
-                    coch.setNombre(jsonObject.getString("name"));
-                    coch.setTelefono(jsonObject.getString("phone_number"));
-                    coch.setDireccion(jsonObject.getString("address"));
-                    Integer x = Integer.valueOf(jsonObject.getString("current_used"));
-                    Integer capacidadActual = Integer.valueOf(jsonObject.getString("capacity")) - x;
-                    coch.setCuposTomados(jsonObject.getString("current_used"));
-                    listaCocheras.add(coch);
-                    ArrayList<Servicio> listaservicios = new ArrayList<Servicio>();
-                    for (int j = 0; j < servicios.length(); j++) {
-                        JSONObject servicio = servicios.getJSONObject(j);
+                        coch.setLatitud(latitud);
+                        coch.setLongitud(longitud);
+                        coch.setCapacidad(jsonObject.getString("capacity"));
+                        coch.setNombre(jsonObject.getString("name"));
+                        coch.setTelefono(jsonObject.getString("phone_number"));
+                        coch.setDireccion(jsonObject.getString("address"));
+                        Integer x = Integer.valueOf(jsonObject.getString("current_used"));
+                        Integer capacidadActual = Integer.valueOf(jsonObject.getString("capacity")) - x;
+                        coch.setCuposTomados(jsonObject.getString("current_used"));
+                        listaCocheras.add(coch);
+                        ArrayList<Servicio> listaservicios = new ArrayList<Servicio>();
+                        for (int j = 0; j < servicios.length(); j++) {
+                            JSONObject servicio = servicios.getJSONObject(j);
 
-                        if (servicio.getBoolean("status") == true) {
-                            ;
-                            Servicio service = new Servicio();
-                            service.setNombre(servicio.getString("name"));
-                            service.setPrecio(servicio.getString("cost_hour"));
-                            listaservicios.add(service);
+                            if (servicio.getBoolean("status") == true) {
+                                Servicio service = new Servicio();
+                                service.setNombre(servicio.getString("name"));
+                                service.setPrecio(servicio.getString("cost_hour"));
+                                listaservicios.add(service);
+
+                            }
 
                         }
-
+                        coch.setListaServicio(listaservicios);
+                        if (x < 15) {
+                            Marker mark = mMap.addMarker(new MarkerOptions().title(jsonObject.getString("name")).position(new LatLng(latitud,
+                                            longitud)).snippet("Cupos:" + capacidadActual.toString()
+                                    ).icon(BitmapDescriptorFactory.fromResource(R.drawable.coche))
+                            );
+                            mark.setTag(coch);
+                        } else {
+                            Marker mark = mMap.addMarker(new MarkerOptions().title(jsonObject.getString("name")).position(new LatLng(latitud,
+                                            longitud)).snippet("Cupos : " + jsonObject.getString("current_used")
+                                    ).icon(BitmapDescriptorFactory.fromResource(R.drawable.parking))
+                            );
+                            mark.setTag(coch);
+                        }
                     }
-                    coch.setListaServicio(listaservicios);
-                    if (x < 15) {
-                        Marker mark = mMap.addMarker(new MarkerOptions().title(jsonObject.getString("name")).position(new LatLng(latitud,
-                                        longitud)).snippet("Cupos:" + capacidadActual.toString()
-                                ).icon(BitmapDescriptorFactory.fromResource(R.drawable.coche))
-                        );
-                        mark.setTag(coch);
-                    } else {
-                        Marker mark = mMap.addMarker(new MarkerOptions().title(jsonObject.getString("name")).position(new LatLng(latitud,
-                                        longitud)).snippet("Cupos : " + jsonObject.getString("current_used")
-                                ).icon(BitmapDescriptorFactory.fromResource(R.drawable.parking))
-                        );
-                        mark.setTag(coch);
-                    }
-                }
                 }
 
             } catch (JSONException e) {
                 Toast.makeText(getApplication(),"No se pudo cargar", Toast.LENGTH_SHORT).show();
             }
-         }
+        }
     }
 
 
@@ -354,25 +349,27 @@ import java.util.ArrayList;
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 return;
             }
-                Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                LatLng userLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
-                ultimaPosicion=userLocation;
-                MarkerOptions userMarker = new MarkerOptions().position(userLocation).title("User Location");
-                userMarker.icon(BitmapDescriptorFactory.fromResource(R.drawable.usericon));
-                mMap.addMarker(userMarker);
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,15));
-                setLat(Double.toString(userLocation.latitude));
-                setLon(Double.toString(userLocation.longitude));
-                CargarUbicacionCocheras cargarUbicacionCocheras = new CargarUbicacionCocheras();
-                cargarUbicacionCocheras.execute(getUrl());
+            Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            LatLng userLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+            ultimaPosicion = userLocation;
+            MarkerOptions userMarker = new MarkerOptions().position(userLocation).title("User Location");
+            userMarker.icon(BitmapDescriptorFactory.fromResource(R.drawable.usericon));
+            mMap.addMarker(userMarker);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));
+            setLat(Double.toString(userLocation.latitude));
+            setLon(Double.toString(userLocation.longitude));
+            CargarUbicacionCocheras cargarUbicacionCocheras = new CargarUbicacionCocheras();
+            cargarUbicacionCocheras.execute(getUrl());
 
         } else {
 
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-                Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 LatLng userLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+                lat = String.valueOf(lastKnownLocation.getLatitude());
+                lon = String.valueOf(lastKnownLocation.getLongitude());
                 MarkerOptions userMarker = new MarkerOptions().position(userLocation).title("User Location");
                 userMarker.icon(BitmapDescriptorFactory.fromResource(R.drawable.usericon));
                 mMap.addMarker(userMarker);
@@ -386,20 +383,22 @@ import java.util.ArrayList;
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
                 Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 LatLng userLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+                lat = String.valueOf(lastKnownLocation.getLatitude());
+                lon = String.valueOf(lastKnownLocation.getLongitude());
                 MarkerOptions userMarker= new MarkerOptions().position(userLocation).title("User Location");
                 userMarker.icon(BitmapDescriptorFactory.fromResource( R.drawable.usericon));
                 mMap.addMarker(userMarker);
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,10));
                 CargarUbicacionCocheras cargarUbicacionCocheras= new CargarUbicacionCocheras();
                 cargarUbicacionCocheras.execute(getUrl());
-        }
+            }
 
 
         }
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             public void onInfoWindowClick(Marker marker) {
                 if(!marker.getTitle().equals("User Location")) {
-                       Cochera info = (Cochera) marker.getTag();
+                    Cochera info = (Cochera) marker.getTag();
                     /*Intent intent = new Intent(MapsActivity.this, DetalleServicio.class);
                     intent.putExtra("Cochera", info);*/
                     Intent intent = new Intent(MapsActivity.this, ContainerCocheraActivity.class);
