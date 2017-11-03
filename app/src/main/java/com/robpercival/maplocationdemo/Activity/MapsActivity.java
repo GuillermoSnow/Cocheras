@@ -100,15 +100,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
+
+
     public void actualizar(View view) {
         mMap.clear();
-        MarkerOptions userMarker = new MarkerOptions().position(ultimaPosicion).title("User Location");
-        userMarker.icon(BitmapDescriptorFactory.fromResource(R.drawable.usericon));
-        mMap.addMarker(userMarker);
-        setLat(Double.toString(ultimaPosicion.latitude));
-        setLon(Double.toString(ultimaPosicion.longitude));
-        CargarUbicacionCocheras cargarUbicacionCocheras = new CargarUbicacionCocheras();
-        cargarUbicacionCocheras.execute(getUrl());
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+
+            Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            LatLng userLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+            ultimaPosicion = userLocation;
+            MarkerOptions userMarker = new MarkerOptions().position(ultimaPosicion).title("User Location");
+            userMarker.icon(BitmapDescriptorFactory.fromResource(R.drawable.usericon));
+            mMap.addMarker(userMarker);
+            setLat(Double.toString(ultimaPosicion.latitude));
+            setLon(Double.toString(ultimaPosicion.longitude));
+            CargarUbicacionCocheras cargarUbicacionCocheras = new CargarUbicacionCocheras();
+            cargarUbicacionCocheras.execute(getUrl());
+        }
     }
 
     public void menu(View view){
@@ -119,7 +128,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (requestCode == 1) {
+       /* if (requestCode == 1) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     {
@@ -127,6 +136,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     }
                 }
             }
+        }*/
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+
+                Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                CargarUbicacionCocheras cargarUbicacionCocheras = new CargarUbicacionCocheras();
+                cargarUbicacionCocheras.execute(getUrl());
+
+            }
+
+
         }
     }
 
@@ -149,6 +172,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mDrawerList.setAdapter(new ArrayAdapter<String>(this,
                 R.layout.drawer_list_item, mOpcionesTitles));
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
@@ -312,7 +336,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mMap = googleMap;
 
-        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        //locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
         locationListener = new LocationListener() {
             @Override
@@ -320,11 +344,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
-                mMap.clear();
+               /* mMap.clear();
                 MarkerOptions userMarker= new MarkerOptions().position(userLocation).title("User Location");
                 userMarker.icon(BitmapDescriptorFactory.fromResource( R.drawable.usericon));
                 mMap.addMarker(userMarker);
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,10));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,10));*/
 
             }
 
@@ -346,9 +370,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         if (Build.VERSION.SDK_INT < 23) {
 
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            /*if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 return;
-            }
+            }*/
             Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             LatLng userLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
             ultimaPosicion = userLocation;
@@ -363,11 +387,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         } else {
 
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+
+               // ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
                 Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 LatLng userLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+                ultimaPosicion = userLocation;
                 lat = String.valueOf(lastKnownLocation.getLatitude());
                 lon = String.valueOf(lastKnownLocation.getLongitude());
                 MarkerOptions userMarker = new MarkerOptions().position(userLocation).title("User Location");
@@ -379,8 +406,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
             } else {
-
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                /*locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
                 Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 LatLng userLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
                 lat = String.valueOf(lastKnownLocation.getLatitude());
@@ -390,7 +417,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.addMarker(userMarker);
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,10));
                 CargarUbicacionCocheras cargarUbicacionCocheras= new CargarUbicacionCocheras();
-                cargarUbicacionCocheras.execute(getUrl());
+                cargarUbicacionCocheras.execute(getUrl());*/
             }
 
 

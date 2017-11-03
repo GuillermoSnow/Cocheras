@@ -22,7 +22,6 @@
             style="@android:style/Widget.DeviceDefault.ImageButton"
             android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/cast_expanded_controller_ad_container_white_stripe_color"
             android:onClick="menu"
             android:src="@drawable/iconsmenu"
             android:visibility="visible" />
