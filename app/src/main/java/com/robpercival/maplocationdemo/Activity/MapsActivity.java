@@ -102,7 +102,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void actualizar(View view) {
 
-        if (Build.VERSION.SDK_INT < 23){
+        if (Build.VERSION.SDK_INT < 23) {
             Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             LatLng userLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
             ultimaPosicion = userLocation;
@@ -114,8 +114,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             setLon(Double.toString(userLocation.longitude));
             CargarUbicacionCocheras cargarUbicacionCocheras = new CargarUbicacionCocheras();
             cargarUbicacionCocheras.execute(getUrl());
-        } else
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        } else if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
             boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
             if (isGPSEnabled) {
@@ -124,7 +123,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 
                 Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                if(lastKnownLocation!=null) {
+                if (lastKnownLocation != null) {
                     mMap.clear();
                     LatLng userLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
                     ultimaPosicion = userLocation;
@@ -136,9 +135,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     setLon(Double.toString(ultimaPosicion.longitude));
                     CargarUbicacionCocheras cargarUbicacionCocheras = new CargarUbicacionCocheras();
                     cargarUbicacionCocheras.execute(getUrl());
-                }
-                else
-                    Toast.makeText(getApplication(),"Hubo un problema al obtener la ubicacion actual", Toast.LENGTH_SHORT).show();
+                } else
+                    Toast.makeText(getApplication(), "Hubo un problema al obtener la ubicacion actual", Toast.LENGTH_SHORT).show();
 
             } else
                 Toast.makeText(getApplication(), "Por favor Encienda el Servicio de GPS ", Toast.LENGTH_SHORT).show();
@@ -173,6 +171,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, locationListener, null);
 
                 Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
                 CargarUbicacionCocheras cargarUbicacionCocheras = new CargarUbicacionCocheras();
                 cargarUbicacionCocheras.execute(getUrl());
 
@@ -251,7 +250,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         @Override
         protected String doInBackground(String... urls) {
             String result = "";
-            String a=null;
+            String a = null;
             URL url;
             HttpURLConnection urlConnection = null;
             try {
@@ -367,8 +366,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
 
         mMap = googleMap;
-       googleMap.setMyLocationEnabled(true);
-       // Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+            mMap.setMyLocationEnabled(true);
+        } else
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+             mMap.setMyLocationEnabled(true);
+        // Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
         //locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
@@ -413,9 +417,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             LatLng userLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
             ultimaPosicion = userLocation;
-            /*MarkerOptions userMarker = new MarkerOptions().position(userLocation).title("User Location");
-            userMarker.icon(BitmapDescriptorFactory.fromResource(R.drawable.usericon));
-            mMap.addMarker(userMarker);*/
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));
             setLat(Double.toString(userLocation.latitude));
             setLon(Double.toString(userLocation.longitude));
@@ -443,8 +444,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         lon = String.valueOf(lastKnownLocation.getLongitude());
                         /*MarkerOptions userMarker = new MarkerOptions().position(userLocation).title("User Location");
                         userMarker.icon(BitmapDescriptorFactory.fromResource(R.drawable.usericon));
-                        mMap.addMarker(userMarker);
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));*/
+                        mMap.addMarker(userMarker);*/
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));
                         CargarUbicacionCocheras cargarUbicacionCocheras = new CargarUbicacionCocheras();
                         cargarUbicacionCocheras.execute(getUrl());
                     }
