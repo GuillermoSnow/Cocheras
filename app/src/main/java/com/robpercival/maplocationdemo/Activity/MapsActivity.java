@@ -102,23 +102,36 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void actualizar(View view) {
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (Build.VERSION.SDK_INT < 23){
+            Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            LatLng userLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+            ultimaPosicion = userLocation;
+            /*MarkerOptions userMarker = new MarkerOptions().position(userLocation).title("User Location");
+            userMarker.icon(BitmapDescriptorFactory.fromResource(R.drawable.usericon));
+            mMap.addMarker(userMarker);*/
+            //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));
+            setLat(Double.toString(userLocation.latitude));
+            setLon(Double.toString(userLocation.longitude));
+            CargarUbicacionCocheras cargarUbicacionCocheras = new CargarUbicacionCocheras();
+            cargarUbicacionCocheras.execute(getUrl());
+        } else
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
-            boolean
-                    isGPSEnabled = locationManager
-                    .isProviderEnabled(LocationManager.GPS_PROVIDER);
+            boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
             if (isGPSEnabled) {
-                mMap.clear();
+
                 locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-                locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, locationListener, null);
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 
                 Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 if(lastKnownLocation!=null) {
+                    mMap.clear();
                     LatLng userLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
                     ultimaPosicion = userLocation;
-                    MarkerOptions userMarker = new MarkerOptions().position(ultimaPosicion).title("User Location");
+                    //AIzaSyCHSq88VNCOxt-VuTHY7BeMgY_1P4eYak4
+                    /*MarkerOptions userMarker = new MarkerOptions().position(ultimaPosicion).title("User Location");
                     userMarker.icon(BitmapDescriptorFactory.fromResource(R.drawable.usericon));
-                    mMap.addMarker(userMarker);
+                    mMap.addMarker(userMarker);*/
                     setLat(Double.toString(ultimaPosicion.latitude));
                     setLon(Double.toString(ultimaPosicion.longitude));
                     CargarUbicacionCocheras cargarUbicacionCocheras = new CargarUbicacionCocheras();
@@ -333,6 +346,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             } catch (JSONException e) {
                 Toast.makeText(getApplication(), "No se pudo cargar las cocheras ", Toast.LENGTH_SHORT).show();
             }
+            Toast.makeText(getApplication(), getUrl(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -353,13 +367,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
 
         mMap = googleMap;
+       googleMap.setMyLocationEnabled(true);
+       // Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
         //locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
 
-                LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                /*LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
                 MarkerOptions userMarker = new MarkerOptions().position(userLocation).title("User Location");
                 userMarker.icon(BitmapDescriptorFactory.fromResource(R.drawable.usericon));
                 mMap.addMarker(userMarker);
@@ -396,9 +413,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             LatLng userLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
             ultimaPosicion = userLocation;
-            MarkerOptions userMarker = new MarkerOptions().position(userLocation).title("User Location");
+            /*MarkerOptions userMarker = new MarkerOptions().position(userLocation).title("User Location");
             userMarker.icon(BitmapDescriptorFactory.fromResource(R.drawable.usericon));
-            mMap.addMarker(userMarker);
+            mMap.addMarker(userMarker);*/
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));
             setLat(Double.toString(userLocation.latitude));
             setLon(Double.toString(userLocation.longitude));
@@ -424,10 +441,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         ultimaPosicion = userLocation;
                         lat = String.valueOf(lastKnownLocation.getLatitude());
                         lon = String.valueOf(lastKnownLocation.getLongitude());
-                        MarkerOptions userMarker = new MarkerOptions().position(userLocation).title("User Location");
+                        /*MarkerOptions userMarker = new MarkerOptions().position(userLocation).title("User Location");
                         userMarker.icon(BitmapDescriptorFactory.fromResource(R.drawable.usericon));
                         mMap.addMarker(userMarker);
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));*/
                         CargarUbicacionCocheras cargarUbicacionCocheras = new CargarUbicacionCocheras();
                         cargarUbicacionCocheras.execute(getUrl());
                     }
