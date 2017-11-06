@@ -19,7 +19,6 @@ public class SobreNosotros extends AppCompatActivity {
 
     private List<Informacion> lista;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
