@@ -40,8 +40,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.DetalleServicio" />
-        <activity android:name=".Activity.ListaServicios" />
         <activity android:name=".Activity.SobreNosotros" />
 
         <activity android:name=".Activity.Container.ContainerCocheraActivity"

@@ -202,8 +202,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
-
-
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             selectItem(position);
@@ -212,20 +210,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void selectItem(int position) {
-        // Create a new fragment
-         /* android.app.Fragment fragment = new android.app.Fragment();
-        Bundle args= new Bundle();
-        args.putInt(InfoFragment.ARG_INFOR_NUMBER, position);
-        fragment.setArguments(args);
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();*/
         mDrawerList.setItemChecked(position, true);
         if (position == 0) {
             Intent meq = new Intent(MapsActivity.this, SobreNosotros.class);
             startActivity(meq);
         }
+        if (position == 1) {
+            Intent meq = new Intent(MapsActivity.this, SobreNosotros.class);
+            startActivity(meq);
+        }
         mDrawerLayout.closeDrawer(mDrawerList);
-
     }
 
     public static class InfoFragment extends android.app.Fragment {
