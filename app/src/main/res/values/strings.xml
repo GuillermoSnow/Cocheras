@@ -27,5 +27,10 @@
     <string name="soles">S/.</string>
     <string name="precioxHora">x Hora</string>
     <string name="estadoServicio_CocheraTest">abierto</string>
+    <string name="quienesSomos">¿Quiénes Somos?</string>
+    <string name="text_quienesSomos">EasyParking es una aplicación muy integral que se apoya de 3 sistemas más para un presión y un buen desempeño de la información de las cocheras disponibles en Lima. EasyParking nace como una iniciativa para resolver el problema de encontrar un estacionamiento en la ciudad de Lima. EasyParking se desarrolla gracias a un proyecto de Calidad de Software de la UNMSM y tiene el respaldo de muchas cocheras disponibles al nivel de Lima.</string>
+    <string name="Problem">Problema del Estacionamiento</string>
+    <string name="text_problemaParking">Lima es una \"cultura del automóvil\" y Lima Centro es el epicentro. Con su pobre tránsito masivo, el estacionamiento nunca ha sido tan desafiante, lo que ha tenido un impacto negativo en la vida económica, ambiental y social de esta metrópolis. Comenzamos abordando las necesidades urgentes de estacionamiento de Lima, y pronto nos expandiremos a otros San Miguel, Callao y a docenas de otras distritos.</string>
+    <string name="text_problemaParking2">A pesar de las incursiones de Uber y el lejano sueño de los autos sin conductor, hoy el conductor típico se enfrenta a un entorno de estacionamiento difícil que no va a desaparecer pronto. Esto es causado por la dependencia del gobierno de la ciudad en los ingresos generados por la gestión de espacios de estacionamiento y violaciones de estacionamiento. Además, los habitantes de la ciudad y los visitantes desprevenidos se ven obligados a navegar por un sistema de señalización confuso que puede incluir no menos de 7 publicaciones separadas con respecto a la disponibilidad de estacionamiento en una calle en particular.</string>
 
 </resources>

@@ -1,4 +1,4 @@
-package com.robpercival.maplocationdemo.Constantes;
+package com.robpercival.maplocationdemo.Util;
 
 /**
  * Esta clase ha sido creado solo para declarar las constantes y mantener un codigo mas entendible
@@ -6,5 +6,5 @@ package com.robpercival.maplocationdemo.Constantes;
  */
 
 public class Constantes {
-
+    public static String SobreNosotros = "Sobre Nosotros";
 }

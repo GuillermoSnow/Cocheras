@@ -40,7 +40,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.SobreNosotros" />
+        <activity android:name=".Activity.SobreNosotros"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
 
         <activity android:name=".Activity.Container.ContainerCocheraActivity"
             android:theme="@style/AppTheme.NoActionBar">
