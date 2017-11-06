@@ -22,6 +22,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -41,6 +44,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -87,7 +92,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public String getUrl() {
-        return "http://54.89.248.15:3000/parking/nearby?lat=" + getLat() + "&lng=" + getLon();
+        return "http://107.22.10.188:3000/parking/nearby?lat=" + getLat() + "&lng=" + getLon();
     }
 
     public void setUrl(String url) {
@@ -245,7 +250,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             URL url;
             HttpURLConnection urlConnection = null;
             try {
-                /*url = new URL(urls[0]);
+                url = new URL(urls[0]);
                 urlConnection = (HttpURLConnection) url.openConnection();
                 InputStream in = urlConnection.getInputStream();
 
@@ -255,14 +260,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     char current = (char) data;
                     result += current;
                     data = reader.read();
-                }*/
+                }/*
                 InputStream is = getAssets().open("muchasCocheras.json");
                 int size = is.available();
                 byte[] buffer = new byte[size];
                 is.read(buffer);
                 is.close();
                 a = new String(buffer, "UTF-8");
-                Log.i("JSON", result);
+                Log.i("JSON", result);*/
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -270,16 +275,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-            return a;
+            return result;
         }
 
         @Override
-        protected void onPostExecute(String a) {
-            super.onPostExecute(a);
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
             String ss = " ";
             try {
 
-                JSONArray lugares = new JSONArray(a);
+                JSONArray lugares = new JSONArray(result);
                 ArrayList<Cochera> listaCocheras = new ArrayList<Cochera>();
 
                 for (int i = 0; i < lugares.length(); i++) {
@@ -388,8 +393,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onProviderEnabled(String s) {
                 if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-
-                    locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, locationListener, null);
+                    CargarUbicacionCocheras cargarUbicacionCocheras= new CargarUbicacionCocheras();
+                    cargarUbicacionCocheras.execute(getUrl());
 
                 }
             }
@@ -424,11 +429,33 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 
                 boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-                if (isGPSEnabled) {
+                boolean isREDEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+                Location lastKnowRED = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+                if (isREDEnabled){
+                    Location lastREDKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                    if (lastREDKnownLocation!=null){
+                        LatLng userLocation = new LatLng(lastREDKnownLocation.getLatitude(), lastREDKnownLocation.getLongitude());
+                        ultimaPosicion = userLocation;
+                        lat = String.valueOf(lastREDKnownLocation.getLatitude());
+                        lon = String.valueOf(lastREDKnownLocation.getLongitude());
+                        /*MarkerOptions userMarker = new MarkerOptions().position(userLocation).title("User Location");
+                        userMarker.icon(BitmapDescriptorFactory.fromResource(R.drawable.usericon));
+                        mMap.addMarker(userMarker);*/
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));
+                        CargarUbicacionCocheras cargarUbicacionCocheras = new CargarUbicacionCocheras();
+                        cargarUbicacionCocheras.execute(getUrl());
+                    }
+
+                    else {
+                    Toast.makeText(getApplication(), "Hubo un problema al obtener la ubicacion actual por Red", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else if (isGPSEnabled) {
                     // ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
                     Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                     if (lastKnownLocation!=null) {
-                        Location lastKnowRED = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                         LatLng userLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
                         ultimaPosicion = userLocation;
                         lat = String.valueOf(lastKnownLocation.getLatitude());
@@ -445,9 +472,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 }
                 else
-                    Toast.makeText(getApplication(),"Por favor Encienda el Servicio de GPS ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplication(),"Por favor Encienda un Servicio de Ubicacion ", Toast.LENGTH_SHORT).show();
             } else {
-                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                mMap.setMyLocationEnabled(true);
+
                 /*locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
                 Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 LatLng userLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
