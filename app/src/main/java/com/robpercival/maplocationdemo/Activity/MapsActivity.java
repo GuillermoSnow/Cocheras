@@ -16,9 +16,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -222,7 +220,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mDrawerLayout.closeDrawer(mDrawerList);
     }
 
-    public static class InfoFragment extends android.app.Fragment {
+    /*public static class InfoFragment extends android.app.Fragment {
         public static final String ARG_INFOR_NUMBER = "info_number";
 
         public InfoFragment() {
@@ -235,7 +233,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             return rootView;
         }
 
-    }
+    }*/
 
 
     public class CargarUbicacionCocheras extends AsyncTask<String, Void, String> {

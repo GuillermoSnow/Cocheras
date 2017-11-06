@@ -14,6 +14,8 @@ public class Cochera implements Serializable{
     private String capacidad;
     private String cuposDisponibles;
     private String cuposTomados;
+    private String nombre;
+    private String direccion;
 
     public String getCuposTomados() {
         return cuposTomados;
@@ -22,10 +24,6 @@ public class Cochera implements Serializable{
     public void setCuposTomados(String cuposTomados) {
         this.cuposTomados = cuposTomados;
     }
-
-    private String nombre;
-    private String direccion;
-
 
     public String getDireccion() {
         return direccion;
@@ -84,16 +82,6 @@ public class Cochera implements Serializable{
     public void setCapacidad(String capacidad) {
         this.capacidad = capacidad;
     }
-
-    public ArrayList<String> getLista() {
-        return lista;
-    }
-
-    public void setLista(ArrayList<String> lista) {
-        this.lista = lista;
-    }
-
-    private ArrayList<String> lista;
 
     public String getCuposDisponibles() {
         return cuposDisponibles;
