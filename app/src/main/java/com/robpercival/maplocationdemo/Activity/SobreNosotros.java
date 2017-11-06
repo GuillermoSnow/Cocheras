@@ -14,7 +14,9 @@ import java.util.List;
 public class SobreNosotros extends AppCompatActivity {
 
     private ListView listavw;
+
     private Adaptador adaptador;
+
     private List<Informacion> lista;
 
 

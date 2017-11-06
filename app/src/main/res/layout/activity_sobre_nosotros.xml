@@ -15,14 +15,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="4dp" />
+        tools:layout_editor_absoluteY="4dp"
+        tools:ignore="MissingConstraints" />
 
     <ListView
         android:id="@+id/listaInfo"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:dividerHeight="5dp"
+        android:layout_height="560dp"
         android:divider="#356E98"
+        android:dividerHeight="5dp"
         tools:layout_editor_absoluteX="3dp"
-        tools:layout_editor_absoluteY="185dp" />
+        tools:layout_editor_absoluteY="187dp" />
 </android.support.constraint.ConstraintLayout>

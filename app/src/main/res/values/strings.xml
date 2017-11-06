@@ -6,8 +6,7 @@
     <string name="title_activity_prueba">Prueba</string>
     <string name="title_activity_gg">gg</string>
     <string-array name="opciones_array">
-        <item>Sobre Nosotros
-        </item>
+        <item>Sobre Nosotros</item>
         <item>Términos y Condiciones </item>
 
     </string-array>

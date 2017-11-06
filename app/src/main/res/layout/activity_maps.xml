@@ -20,10 +20,11 @@
         <ImageButton
             android:id="@+id/imageButton"
             style="@android:style/Widget.DeviceDefault.ImageButton"
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
+            android:layout_width="53dp"
+            android:layout_height="50dp"
             android:onClick="menu"
-            android:src="@drawable/iconsmenu"
+            android:background="@android:color/transparent"
+            android:src="@drawable/menu"
             android:visibility="visible" />
 
         <Button
