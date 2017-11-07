@@ -8,7 +8,7 @@
     <string-array name="opciones_array">
         <item>Sobre Nosotros</item>
         <item>Términos y Condiciones </item>
-
+        <item>Tutorial</item>
     </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -73,4 +73,5 @@
 
     <string name="play_again_desc">Este boton inicia el walkthrough denuevo </string>
     <string name="play_again">Walkthrough</string>
+    <string name="walkthrough">¿Quiéres ver el tutorial otra vez ? Mira los beneficios que tiene nuestra. Solo tienes que presionar en la imagen y mira otra vez el tutorial.</string>
 </resources>

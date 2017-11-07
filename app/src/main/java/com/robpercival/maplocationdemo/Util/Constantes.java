@@ -8,4 +8,5 @@ package com.robpercival.maplocationdemo.Util;
 public class Constantes {
     public static String SobreNosotros = "Sobre Nosotros";
     public static String terminosCondiciones = "Términos y Condiciones";
+    public static String tutorial = "Tutorial";
 }
