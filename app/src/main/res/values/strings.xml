@@ -59,17 +59,17 @@
     <string name="skip">SALTAR INTRO</string>
     <string name="start">LO ENTIENDO!</string>
 
-    <string name="slide_1_title">Primer título!</string>
-    <string name="slide_1_desc">Puro floro del PRIMER Slide xdxdxdxd</string>
+    <string name="slide_1_title">Busca Cocheras rápidamente!</string>
+    <string name="slide_1_desc">Encuentra todas cocheras disponibles a 5 Km de tu posición</string>
 
-    <string name="slide_2_title">Segundo título</string>
-    <string name="slide_2_desc">Puro floro del SEGUNDO Slide xdxdxdxd!</string>
+    <string name="slide_2_title">Significado de Color de Cochera</string>
+    <string name="slide_2_desc">Las cochera de color verde son las que estan libres mientras que las de color rojo significa que esta lleno</string>
 
-    <string name="slide_3_title">Tercer título</string>
-    <string name="slide_3_desc">Puro floro del TERCER Slide xdxdxdxd!</string>
+    <string name="slide_3_title">Busca cocheras por Ublicación</string>
+    <string name="slide_3_desc">Puedes buscar las cocheras mas cerca ingresando una Ubicacion</string>
 
-    <string name="slide_4_title">Cuarto título</string>
-    <string name="slide_4_desc">Puro floro del CUARTO Slide xdxdxdxd!</string>
+    <string name="slide_4_title">Ahorra dinero</string>
+    <string name="slide_4_desc">Ahorra tu dinero y encuentra la cocheras más cerca a donde quieres</string>
 
     <string name="play_again_desc">Este boton inicia el walkthrough denuevo </string>
     <string name="play_again">Walkthrough</string>
