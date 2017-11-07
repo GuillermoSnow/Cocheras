@@ -114,7 +114,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 cargarUbicacionCocheras.execute(getUrl());
 
             } else {
-                Toast.makeText(getApplication(), "No se tiene permiso de ubicación ", Toast.LENGTH_SHORT).show();
+                 Toast.makeText(getApplication(), "No se tiene permiso de ubicación ", Toast.LENGTH_SHORT).show();
 
             }
         } else if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
