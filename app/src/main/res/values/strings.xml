@@ -51,4 +51,26 @@
     <string name="text_condiciones4_1">a. USTED ENTIENDE EXPRESAMENTE QUE SU USO DEL SERVICIO Y EL CONTENIDO ES BAJO SU PROPIO RIESGO Y QUE EL SERVICIO Y EL CONTENIDO SE PROPORCIONAN \"TAL CUAL\" Y \"TAL COMO ESTÁN DISPONIBLES\".</string>
     <string name="text_condiciones4_2">b. ADEMÁS, Y SIN DEROGAR NINGUNA OTRA EXENCIÓN DE RESPONSABILIDAD EN ESTOS TÉRMINOS, POLIS RENUNCIA A CUALQUIER GARANTÍA PARA LA EXACTITUD DE LOS MAPAS, LAS CONDICIONES DEL CAMINO O LAS TARIFAS DE APARCAMIENTO PRESENTADAS EN O POR EL SERVICIO.</string>
 
+    <!--by miguel-->
+    <string name="button_search_name">Buscar</string>
+
+    <string name="title_activity_welcome">Home Screen</string>
+    <string name="next">SIGUIENTE</string>
+    <string name="skip">SALTAR INTRO</string>
+    <string name="start">LO ENTIENDO!</string>
+
+    <string name="slide_1_title">Primer título!</string>
+    <string name="slide_1_desc">Puro floro del PRIMER Slide xdxdxdxd</string>
+
+    <string name="slide_2_title">Segundo título</string>
+    <string name="slide_2_desc">Puro floro del SEGUNDO Slide xdxdxdxd!</string>
+
+    <string name="slide_3_title">Tercer título</string>
+    <string name="slide_3_desc">Puro floro del TERCER Slide xdxdxdxd!</string>
+
+    <string name="slide_4_title">Cuarto título</string>
+    <string name="slide_4_desc">Puro floro del CUARTO Slide xdxdxdxd!</string>
+
+    <string name="play_again_desc">Este boton inicia el walkthrough denuevo </string>
+    <string name="play_again">Walkthrough</string>
 </resources>

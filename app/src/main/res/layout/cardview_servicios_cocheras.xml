@@ -17,7 +17,6 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/height_cardview"
             android:background="@drawable/lavado"
-            android:scaleType="centerCrop"
             />
         <LinearLayout
             android:layout_width="match_parent"
