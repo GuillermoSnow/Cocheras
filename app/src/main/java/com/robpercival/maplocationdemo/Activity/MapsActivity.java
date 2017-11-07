@@ -372,7 +372,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mMap.setMyLocationEnabled(true);
         } else
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-        mMap.setMyLocationEnabled(true);
+             mMap.setMyLocationEnabled(true);
         // Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
         //locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
