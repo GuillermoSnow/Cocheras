@@ -133,6 +133,60 @@ tools:context="com.robpercival.maplocationdemo.Activity.SobreNosotros">
                 />
             <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingTop="@dimen/activity_vertical_margin">
+                <TextView
+                    android:id="@+id/version"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/textsize_nameCochera"
+                    android:text="@string/version"
+                    android:paddingBottom="@dimen/activity_vertical_margin"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_vertical_margin" />
+
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_divider"
+                android:background="@android:color/darker_gray"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingTop="@dimen/activity_vertical_margin">
+                <TextView
+                    android:id="@+id/develop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/textsize_nameCochera"
+                    android:text="@string/develop"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_vertical_margin" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/activity_vertical_margin"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin">
+                    <TextView
+                        android:id="@+id/txt_develop"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/textsize_capacidad_cochera"
+                        android:text="@string/text_develop" />
+                </LinearLayout>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_divider"
+                android:background="@android:color/darker_gray"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingTop="10dp"
@@ -181,7 +235,7 @@ tools:context="com.robpercival.maplocationdemo.Activity.SobreNosotros">
                     android:textSize="@dimen/textsize_capacidad_cochera"
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="15dp"
-                    android:text="@string/email_cocheraTest"
+                    android:text="@string/email_contacto"
                     android:layout_gravity="center_horizontal"
                     android:textStyle="bold"
                     />

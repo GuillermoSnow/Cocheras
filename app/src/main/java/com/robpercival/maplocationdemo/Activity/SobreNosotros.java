@@ -20,16 +20,13 @@ public class SobreNosotros extends AppCompatActivity {
         setContentView(R.layout.activity_sobre_nosotros);
         showToolbar(Constantes.SobreNosotros, true);
         TextView textViewquienesSomos = (TextView) findViewById(R.id.txt_quienesSomos);
-        textViewquienesSomos.setText(new SpannableString(textViewquienesSomos.getText()));
-        TextJustification.justify(textViewquienesSomos);
+        justificarTexto(textViewquienesSomos);
 
         TextView textViewproblemaPark = (TextView) findViewById(R.id.txt_problemaParking);
-        textViewproblemaPark.setText(new SpannableString(textViewproblemaPark.getText()));
-        TextJustification.justify(textViewproblemaPark);
+        justificarTexto(textViewproblemaPark);
 
         TextView textViewproblemaPark2 = (TextView) findViewById(R.id.txt_problemaParking2);
-        textViewproblemaPark2.setText(new SpannableString(textViewproblemaPark2.getText()));
-        TextJustification.justify(textViewproblemaPark2);
+        justificarTexto(textViewproblemaPark2);
 
 
     }
@@ -47,6 +44,7 @@ public class SobreNosotros extends AppCompatActivity {
         });
     }
     public void justificarTexto(TextView textView){
-
+        textView.setText(new SpannableString(textView.getText()));
+        TextJustification.justify(textView);
     }
 }

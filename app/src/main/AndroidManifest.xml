@@ -16,6 +16,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
+        android:name="android.support.multidex.MultiDexApplication"
         android:theme="@style/AppTheme">
 
         <!--
@@ -32,24 +33,32 @@
 
         <activity
             android:name=".Activity.MapsActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:label="@string/title_activity_maps">
+            android:label="@string/title_activity_maps"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.SobreNosotros"
+        <activity
+            android:name=".Activity.SobreNosotros"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".Activity.Container.ContainerCocheraActivity"
             android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-
-        <activity android:name=".Activity.Container.ContainerCocheraActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <!--android:parentActivityName=".Activity.MapsActivity">
+            <!--
+            android:parentActivityName=".Activity.MapsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Activity.MapsActivity" />-->
+                android:value=".Activity.MapsActivity" />
+            -->
+        </activity>
+        <activity android:name=".Activity.TerminosCondiciones"
+            android:parentActivityName=".Activity.MapsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Activity.MapsActivity" />
         </activity>
     </application>
 
