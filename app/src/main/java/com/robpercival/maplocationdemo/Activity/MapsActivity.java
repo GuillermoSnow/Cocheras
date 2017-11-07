@@ -11,20 +11,17 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.multidex.MultiDex;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -45,7 +42,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -215,12 +211,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void selectItem(int position) {
         mDrawerList.setItemChecked(position, true);
         if (position == 0) {
-            Intent meq = new Intent(MapsActivity.this, SobreNosotros.class);
-            startActivity(meq);
+            Intent sobreNosotros = new Intent(MapsActivity.this, SobreNosotros.class);
+            startActivity(sobreNosotros);
         }
         if (position == 1) {
-            Intent meq = new Intent(MapsActivity.this, SobreNosotros.class);
-            startActivity(meq);
+            Intent terminosCondiciones = new Intent(MapsActivity.this, TerminosCondiciones.class);
+            startActivity(terminosCondiciones);
         }
         mDrawerLayout.closeDrawer(mDrawerList);
     }
@@ -360,7 +356,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
+        MultiDex.install(this);
         mMap = googleMap;
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
