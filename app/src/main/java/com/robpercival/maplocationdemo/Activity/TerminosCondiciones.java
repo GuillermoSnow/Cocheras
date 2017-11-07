@@ -8,6 +8,7 @@ import android.text.style.StyleSpan;
 import android.widget.TextView;
 
 import com.robpercival.maplocationdemo.R;
+import com.robpercival.maplocationdemo.Util.Constantes;
 import com.robpercival.maplocationdemo.Util.TextJustification;
 
 public class TerminosCondiciones extends AppCompatActivity {
@@ -51,6 +52,8 @@ public class TerminosCondiciones extends AppCompatActivity {
 
                 TextView acuerdo4_2 = (TextView) findViewById(R.id.txt_condiciones4_2);
                 justificarTexto(acuerdo4_2);
+
+        getSupportActionBar().setTitle(Constantes.terminosCondiciones);
 
     }
 
