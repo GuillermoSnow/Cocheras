@@ -104,22 +104,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         if (Build.VERSION.SDK_INT < 23) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                return;
-            }
-            Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            LatLng userLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
-            ultimaPosicion = userLocation;
+
+                Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                LatLng userLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+                ultimaPosicion = userLocation;
             /*MarkerOptions userMarker = new MarkerOptions().position(userLocation).title("User Location");
             userMarker.icon(BitmapDescriptorFactory.fromResource(R.drawable.usericon));
             mMap.addMarker(userMarker);*/
-            //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));
-            setLat(Double.toString(userLocation.latitude));
-            setLon(Double.toString(userLocation.longitude));
-            CargarUbicacionCocheras cargarUbicacionCocheras = new CargarUbicacionCocheras();
-            cargarUbicacionCocheras.execute(getUrl());
+                //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));
+                setLat(Double.toString(userLocation.latitude));
+                setLon(Double.toString(userLocation.longitude));
+                CargarUbicacionCocheras cargarUbicacionCocheras = new CargarUbicacionCocheras();
+                cargarUbicacionCocheras.execute(getUrl());
+
+            } else {
+                Toast.makeText(getApplication(), "No se tiene permiso de ubicación ", Toast.LENGTH_SHORT).show();
+
+            }
         } else if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
             boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
             if (isGPSEnabled) {
 
                 locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
@@ -367,7 +372,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mMap.setMyLocationEnabled(true);
         } else
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-             mMap.setMyLocationEnabled(true);
+        mMap.setMyLocationEnabled(true);
         // Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
         //locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
@@ -393,10 +398,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onProviderEnabled(String s) {
                 if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+
+                }
+
+                /*if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     CargarUbicacionCocheras cargarUbicacionCocheras= new CargarUbicacionCocheras();
                     cargarUbicacionCocheras.execute(getUrl());
 
-                }
+                }*/
             }
 
             @Override
@@ -424,14 +434,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
 
-                locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, locationListener, null);
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
 
                 //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 
                 boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
                 boolean isREDEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
-                Location lastKnowRED = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
                 if (isREDEnabled){
                     Location lastREDKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
@@ -442,8 +452,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         lon = String.valueOf(lastREDKnownLocation.getLongitude());
                         /*MarkerOptions userMarker = new MarkerOptions().position(userLocation).title("User Location");
                         userMarker.icon(BitmapDescriptorFactory.fromResource(R.drawable.usericon));
-                        mMap.addMarker(userMarker);*/
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));
+                        mMap.addMarker(userMarker);
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));*/
                         CargarUbicacionCocheras cargarUbicacionCocheras = new CargarUbicacionCocheras();
                         cargarUbicacionCocheras.execute(getUrl());
                     }
@@ -477,17 +487,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
                 mMap.setMyLocationEnabled(true);
 
-                /*locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-                Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                LatLng userLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
-                lat = String.valueOf(lastKnownLocation.getLatitude());
-                lon = String.valueOf(lastKnownLocation.getLongitude());
-                MarkerOptions userMarker= new MarkerOptions().position(userLocation).title("User Location");
-                userMarker.icon(BitmapDescriptorFactory.fromResource( R.drawable.usericon));
-                mMap.addMarker(userMarker);
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,10));
-                CargarUbicacionCocheras cargarUbicacionCocheras= new CargarUbicacionCocheras();
-                cargarUbicacionCocheras.execute(getUrl());*/
+
             }
 
 
