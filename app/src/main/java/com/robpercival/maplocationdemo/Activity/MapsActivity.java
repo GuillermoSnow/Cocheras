@@ -172,11 +172,51 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-                locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, locationListener, null);
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
 
-                Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                /*Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 CargarUbicacionCocheras cargarUbicacionCocheras = new CargarUbicacionCocheras();
-                cargarUbicacionCocheras.execute(getUrl());
+                cargarUbicacionCocheras.execute(getUrl());*/
+                boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+                boolean isREDEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+                if (isREDEnabled){
+                    Location lastREDKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                    if (lastREDKnownLocation!=null){
+                        LatLng userLocation = new LatLng(lastREDKnownLocation.getLatitude(), lastREDKnownLocation.getLongitude());
+                        ultimaPosicion = userLocation;
+                        lat = String.valueOf(lastREDKnownLocation.getLatitude());
+                        lon = String.valueOf(lastREDKnownLocation.getLongitude());
+                        /*MarkerOptions userMarker = new MarkerOptions().position(userLocation).title("User Location");
+                        userMarker.icon(BitmapDescriptorFactory.fromResource(R.drawable.usericon));
+                        mMap.addMarker(userMarker);*/
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));
+                        CargarUbicacionCocheras cargarUbicacionCocheras = new CargarUbicacionCocheras();
+                        cargarUbicacionCocheras.execute(getUrl());
+                    }
+
+                    else {
+                        Toast.makeText(getApplication(), "Hubo un problema al obtener la ubicacion actual por Red", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else if (isGPSEnabled) {
+                    // ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                    Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    if (lastKnownLocation!=null) {
+                        LatLng userLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+                        ultimaPosicion = userLocation;
+                        lat = String.valueOf(lastKnownLocation.getLatitude());
+                        lon = String.valueOf(lastKnownLocation.getLongitude());
+                        /*MarkerOptions userMarker = new MarkerOptions().position(userLocation).title("User Location");
+                        userMarker.icon(BitmapDescriptorFactory.fromResource(R.drawable.usericon));
+                        mMap.addMarker(userMarker);*/
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));
+                        CargarUbicacionCocheras cargarUbicacionCocheras = new CargarUbicacionCocheras();
+                        cargarUbicacionCocheras.execute(getUrl());
+                    }
+                    else
+                        Toast.makeText(getApplication(),"Hubo un problema al obtener la ubicacion actual", Toast.LENGTH_SHORT).show();
+
+                }
 
             }
 
@@ -203,6 +243,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 R.layout.drawer_list_item, mOpcionesTitles));
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
@@ -368,7 +409,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mMap.setMyLocationEnabled(true);
         } else
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-             mMap.setMyLocationEnabled(true);
         // Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
         //locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
@@ -481,7 +521,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     Toast.makeText(getApplication(),"Por favor Encienda un Servicio de Ubicacion ", Toast.LENGTH_SHORT).show();
             } else {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-                mMap.setMyLocationEnabled(true);
+               // mMap.setMyLocationEnabled(true);
 
 
             }
