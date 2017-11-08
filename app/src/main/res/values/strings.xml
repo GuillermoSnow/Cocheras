@@ -23,7 +23,7 @@
     <string name="telefono_cocheraTest">997595078</string>
     <string name="email_cocheraTest">los.jardines@gmail.com</string>
     <string name="nameServicio_CocheraTest">Lavado de Vehiculo</string>
-    <string name="precioServicio_CocheraTest">15.00</string>
+    <string name="precioServicio_CocheraTest">S/.15.00</string>
     <string name="soles">S/.</string>
     <string name="precioxHora">x Hora</string>
     <string name="estadoServicio_CocheraTest">abierto</string>
