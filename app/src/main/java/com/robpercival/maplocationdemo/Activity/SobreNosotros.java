@@ -4,13 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.SpannableString;
 import android.view.View;
-import android.widget.TextView;
 
 import com.robpercival.maplocationdemo.R;
 import com.robpercival.maplocationdemo.Util.Constantes;
-import com.robpercival.maplocationdemo.Util.TextJustification;
 
 public class SobreNosotros extends AppCompatActivity {
 
@@ -19,15 +16,6 @@ public class SobreNosotros extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sobre_nosotros);
         showToolbar(Constantes.SobreNosotros, true);
-        TextView textViewquienesSomos = (TextView) findViewById(R.id.txt_quienesSomos);
-        justificarTexto(textViewquienesSomos);
-
-        TextView textViewproblemaPark = (TextView) findViewById(R.id.txt_problemaParking);
-        justificarTexto(textViewproblemaPark);
-
-        TextView textViewproblemaPark2 = (TextView) findViewById(R.id.txt_problemaParking2);
-        justificarTexto(textViewproblemaPark2);
-
 
     }
     public void showToolbar(String tittle, boolean upButton){
@@ -43,8 +31,5 @@ public class SobreNosotros extends AppCompatActivity {
             }
         });
     }
-    public void justificarTexto(TextView textView){
-        textView.setText(new SpannableString(textView.getText()));
-        TextJustification.justify(textView);
-    }
+
 }

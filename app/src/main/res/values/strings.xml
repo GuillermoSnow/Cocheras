@@ -28,9 +28,9 @@
     <string name="precioxHora">x Hora</string>
     <string name="estadoServicio_CocheraTest">abierto</string>
     <string name="quienesSomos">¿Quiénes Somos?</string>
-    <string name="text_quienesSomos">EasyParking es una aplicación integral que se apoya de 2 sistemas complementarios más para un buen desempeño de la información de las cocheras disponibles en Lima. EasyParking nace como una iniciativa para resolver el problema de encontrar un estacionamiento en la ciudad de Lima. EasyParking se desarrolla gracias a un proyecto de Calidad de Software de la UNMSM y tiene el respaldo de diferentes cocheras disponibles al nivel de Lima.</string>
+    <string name="text_quienesSomos">EasyParking es una aplicación integral que se apoya de 2 sistemas complementarios más para un buen desempeño de la información de las cocheras disponibles en Lima. EasyParking nace como una iniciativa para resolver el problema de encontrar un estacionamiento en la ciudad de Lima. EasyParking se logra desarrollar gracias a un proyecto de Calidad de Software de la UNMSM y tiene el respaldo de diferentes cocheras disponibles al nivel de Lima.</string>
     <string name="Problem">Problema del Estacionamiento</string>
-    <string name="text_problemaParking">Lima es una \"cultura del automóvil\" y Lima Centro es el epicentro. Con su pobre tránsito masivo, el estacionamiento nunca ha sido tan desafiante, lo que ha tenido un impacto negativo en la vida económica, ambiental y social de esta metrópolis. Comenzamos abordando las necesidades urgentes de estacionamiento de Lima, y pronto nos expandiremos a otros distritos como son: San Miguel, Callao y a docenas de otras distritos.</string>
+    <string name="text_problemaParking">Lima es una \"cultura del automóvil\" y Lima Centro es el epicentro. Con su pobre tránsito masivo, el estacionamiento nunca ha sido tan desafiante, lo que ha tenido un impacto negativo en la vida económica, ambiental y social de esta metrópolis. Comenzamos abordando las necesidades urgentes de estacionamiento de Lima, y pronto nos expandiremos a otros distritos como: San Miguel, Callao y a docenas de otras distritos.</string>
     <string name="text_problemaParking2">A pesar de las incursiones de Uber y el lejano sueño de los autos sin conductor, hoy el conductor típico se enfrenta a un entorno de estacionamiento difícil que no va a desaparecer pronto. Esto es causado por la dependencia del gobierno de la ciudad en los ingresos generados por la gestión de espacios de estacionamiento y violaciones de estacionamiento. Además, los habitantes de la ciudad y los visitantes desprevenidos se ven obligados a navegar por un sistema de señalización confuso que puede incluir no menos de 7 publicaciones separadas con respecto a la disponibilidad de estacionamiento en una calle en particular.</string>
     <string name="version">Version 1.0</string>
     <string name="develop">Desarrollado por:</string>
@@ -41,7 +41,7 @@
     <string name="text_condiciones2">Al hacer clic en el botón \"Aceptar\", o acceder y usar el Servicio (definido más abajo), usted reconoce y representa que:</string>
     <string name="text_condiciones3">a. Tiene más de 18 años y tiene la capacidad legal para ingresar estos Términos (definidos a continuación).</string>
     <string name="text_condiciones4">b. Usted, en su propio nombre como individuo y en nombre de su empleador u otra entidad legal (colectivamente \"usted\" o \"su\"), ha leído y entendido y acepta que estos Términos de uso (\"Términos\") rigen sus derechos y obligaciones con respecto al uso de la Aplicación de EasyParking (\"Aplicación\") y el Sitio (todos de los cuales se conocen colectivamente como el \"Servicio\").</string>
-    <string name="text_condiciones5">ANTES DE ACEPTAR ESTOS TÉRMINOS, REVISE CUIDADOSAMENTE LA SECCIÓN 4 de ESTOS TÉRMINOS, QUE RECHAZAN LAS GARANTÍAS Y LIMITAN LA RESPONSABILIDAD DE EASYPARKING PARA CON USTED.</string>
+    <string name="text_condiciones5">ANTES DE ACEPTAR ESTOS TÉRMINOS, REVISE CUIDADOSAMENTE LA SECCIÓN 4 DE ESTOS TÉRMINOS, QUE RECHAZAN LAS GARANTÍAS Y LIMITAN LA RESPONSABILIDAD DE EASYPARKING PARA CON USTED.</string>
     <string name="text_acuerdos1">1. ACUERDO CON LOS TÉRMINOS Y LA POLÍTICA DE PRIVACIDAD. Usted comprende y acepta que al marcar la casilla y hacer clic en Acepto y / o acceder y continuar utilizando el Servicio.</string>
     <string name="text_acuerdos2">2. EL SERVICIO. El Servicio está destinado a brindar a los usuarios información sobre el estacionamiento y ayudarlos en su búsqueda de estacionamiento. Si bien el Servicio aspira a ser útil, no está destinado a garantizar la disponibilidad del estacionamiento ni a confiar en situaciones en las que la señalización u otros indicadores estipulen lo contrario.</string>
     <string name="text_title_acuerdos3">3. PROPIEDAD INTELECTUAL</string>
@@ -60,18 +60,18 @@
     <string name="start">LO ENTIENDO!</string>
 
     <string name="slide_1_title">Busca Cocheras rápidamente!</string>
-    <string name="slide_1_desc">Encuentra todas cocheras disponibles a 5 Km de tu posición</string>
+    <string name="slide_1_desc">Encuentra todas las cocheras disponibles a 3 Km de tu posición</string>
 
-    <string name="slide_2_title">Significado de Color de Cochera</string>
-    <string name="slide_2_desc">Las cochera de color verde son las que estan libres mientras que las de color rojo significa que esta lleno</string>
+    <string name="slide_2_title">Significado del Color de la Cochera</string>
+    <string name="slide_2_desc">Las cochera de color verde son las que están libres mientras que las de color rojo significa que esta ocupada</string>
 
-    <string name="slide_3_title">Busca cocheras por Ublicación</string>
-    <string name="slide_3_desc">Puedes buscar las cocheras mas cerca ingresando una Ubicacion</string>
+    <string name="slide_3_title">Busca las cocheras por Ublicación</string>
+    <string name="slide_3_desc">Puedes buscar las cocheras más cerca ingresando una Ubicación</string>
 
     <string name="slide_4_title">Ahorra dinero</string>
-    <string name="slide_4_desc">Ahorra tu dinero y encuentra la cocheras más cerca a donde quieres</string>
+    <string name="slide_4_desc">Ahorra dinero y encuentra la cocheras más cerca a donde quieres</string>
 
     <string name="play_again_desc">Este boton inicia el walkthrough denuevo </string>
     <string name="play_again">Walkthrough</string>
-    <string name="walkthrough">¿Quiéres ver el tutorial otra vez ? Mira los beneficios que tiene nuestra. Solo tienes que presionar en la imagen y mira otra vez el tutorial.</string>
+    <string name="walkthrough">¿Quiéres ver el tutorial otra vez ? Mira los beneficios que tiene nuestra aplicación. Solo tienes que presionar en la imagen y mira otra vez el tutorial.</string>
 </resources>
