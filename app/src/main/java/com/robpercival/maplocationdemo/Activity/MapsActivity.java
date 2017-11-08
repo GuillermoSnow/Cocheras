@@ -99,7 +99,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void actualizar(View view) {
 
         if (Build.VERSION.SDK_INT < 23) {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ) {
 
                 Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                 LatLng userLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
@@ -171,8 +171,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
+
+                locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
                 locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+                mMap.setMyLocationEnabled(true);
 
                 /*Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 CargarUbicacionCocheras cargarUbicacionCocheras = new CargarUbicacionCocheras();
@@ -198,9 +201,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         Toast.makeText(getApplication(), "Hubo un problema al obtener la ubicacion actual por Red", Toast.LENGTH_SHORT).show();
                     }
                 }
-                else if (isGPSEnabled) {
+                 if (isGPSEnabled) {
                     // ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
                     Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    mMap.setMyLocationEnabled(true);
+
                     if (lastKnownLocation!=null) {
                         LatLng userLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
                         ultimaPosicion = userLocation;
@@ -483,6 +488,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     Location lastREDKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                     if (lastREDKnownLocation!=null){
                         LatLng userLocation = new LatLng(lastREDKnownLocation.getLatitude(), lastREDKnownLocation.getLongitude());
+                        mMap.setMyLocationEnabled(true);
+
                         ultimaPosicion = userLocation;
                         lat = String.valueOf(lastREDKnownLocation.getLatitude());
                         lon = String.valueOf(lastREDKnownLocation.getLongitude());
@@ -506,6 +513,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         ultimaPosicion = userLocation;
                         lat = String.valueOf(lastKnownLocation.getLatitude());
                         lon = String.valueOf(lastKnownLocation.getLongitude());
+                        mMap.setMyLocationEnabled(true);
+
                         /*MarkerOptions userMarker = new MarkerOptions().position(userLocation).title("User Location");
                         userMarker.icon(BitmapDescriptorFactory.fromResource(R.drawable.usericon));
                         mMap.addMarker(userMarker);*/
