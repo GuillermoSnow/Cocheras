@@ -100,6 +100,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         if (Build.VERSION.SDK_INT < 23) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ) {
+                mMap.setMyLocationEnabled(true);
 
                 Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                 LatLng userLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
@@ -122,6 +123,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
             if (isGPSEnabled) {
+                mMap.setMyLocationEnabled(true);
 
                 locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
@@ -373,13 +375,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                         }
                         coch.setListaServicio(listaservicios);
-                        if (x < 15) {
+                        if (capacidadActual > 30) {
                             Marker mark = mMap.addMarker(new MarkerOptions().title(jsonObject.getString("name")).position(new LatLng(latitud,
                                             longitud)).snippet("Cupos:" + capacidadActual.toString()
                                     ).icon(BitmapDescriptorFactory.fromResource(R.drawable.coche))
                             );
                             mark.setTag(coch);
-                        } else {
+                        }  else if(capacidadActual<=30 && capacidadActual>11)  {
                             Marker mark = mMap.addMarker(new MarkerOptions().title(jsonObject.getString("name")).position(new LatLng(latitud,
                                             longitud)).snippet("Cupos : " + jsonObject.getString("current_used")
                                     ).icon(BitmapDescriptorFactory.fromResource(R.drawable.parking))
@@ -392,7 +394,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             } catch (JSONException e) {
                 Toast.makeText(getApplication(), "No se pudo cargar las cocheras ", Toast.LENGTH_SHORT).show();
             }
-            Toast.makeText(getApplication(), getUrl(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -465,6 +466,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             /*if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 return;
             }*/
+            mMap.setMyLocationEnabled(true);
             Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             LatLng userLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
             ultimaPosicion = userLocation;
