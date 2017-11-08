@@ -32,10 +32,10 @@
     <string name="Problem">Problema del Estacionamiento</string>
     <string name="text_problemaParking">Lima es una \"cultura del automóvil\" y Lima Centro es el epicentro. Con su pobre tránsito masivo, el estacionamiento nunca ha sido tan desafiante, lo que ha tenido un impacto negativo en la vida económica, ambiental y social de esta metrópolis. Comenzamos abordando las necesidades urgentes de estacionamiento de Lima, y pronto nos expandiremos a otros distritos como: San Miguel, Callao y a docenas de otras distritos.</string>
     <string name="text_problemaParking2">A pesar de las incursiones de Uber y el lejano sueño de los autos sin conductor, hoy el conductor típico se enfrenta a un entorno de estacionamiento difícil que no va a desaparecer pronto. Esto es causado por la dependencia del gobierno de la ciudad en los ingresos generados por la gestión de espacios de estacionamiento y violaciones de estacionamiento. Además, los habitantes de la ciudad y los visitantes desprevenidos se ven obligados a navegar por un sistema de señalización confuso que puede incluir no menos de 7 publicaciones separadas con respecto a la disponibilidad de estacionamiento en una calle en particular.</string>
-    <string name="version">Version 1.0</string>
+    <string name="version">Versión 1.0</string>
     <string name="develop">Desarrollado por:</string>
     <string name="text_develop">Alumnos de la UNMSM</string>
-    <string name="email_contacto">easyParking@gmail.com</string>
+    <string name="email_contacto">easyParking@parking.com</string>
     <string name="condicionesUso">EasyParking Condiciones de Uso</string>
     <string name="text_condiciones">LEA ATENTAMENTE LO SIGUIENTE ANTES DE ACEPTAR ESTOS TÉRMINOS  PARA ACCEDER Y / O UTILIZAR EL SERVICIO (DEFINIDO A CONTINUACIÓN).</string>
     <string name="text_condiciones2">Al hacer clic en el botón \"Aceptar\", o acceder y usar el Servicio (definido más abajo), usted reconoce y representa que:</string>
