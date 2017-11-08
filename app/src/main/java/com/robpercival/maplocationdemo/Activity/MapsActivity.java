@@ -269,6 +269,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Intent terminosCondiciones = new Intent(MapsActivity.this, TerminosCondiciones.class);
             startActivity(terminosCondiciones);
         }
+        if (position == 2) {
+            Intent terminosCondiciones = new Intent(MapsActivity.this, Tutorial.class);
+            startActivity(terminosCondiciones);
+        }
         mDrawerLayout.closeDrawer(mDrawerList);
     }
 
