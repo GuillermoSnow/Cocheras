@@ -505,6 +505,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));*/
                         CargarUbicacionCocheras cargarUbicacionCocheras = new CargarUbicacionCocheras();
                         cargarUbicacionCocheras.execute(getUrl());
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));
+
                     }
 
                     else {
@@ -524,9 +526,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         /*MarkerOptions userMarker = new MarkerOptions().position(userLocation).title("User Location");
                         userMarker.icon(BitmapDescriptorFactory.fromResource(R.drawable.usericon));
                         mMap.addMarker(userMarker);*/
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));
                         CargarUbicacionCocheras cargarUbicacionCocheras = new CargarUbicacionCocheras();
                         cargarUbicacionCocheras.execute(getUrl());
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));
+
+
                     }
                     else
                         Toast.makeText(getApplication(),"Hubo un problema al obtener la ubicacion actual", Toast.LENGTH_SHORT).show();
