@@ -418,13 +418,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             mark.setTag(coch);
                         }  else if(capacidadActual<=30 && capacidadActual>11)  {
                             Marker mark = mMap.addMarker(new MarkerOptions().title(jsonObject.getString("name")).position(new LatLng(latitud,
-                                            longitud)).snippet("Cupos : " + jsonObject.getString("current_used")
+                                            longitud)).snippet("Cupos : " + capacidadActual.toString()
                                     ).icon(BitmapDescriptorFactory.fromResource(R.drawable.parking))
                             );
                             mark.setTag(coch);
                         }   else if(capacidadActual<11){
                             Marker mark = mMap.addMarker(new MarkerOptions().title(jsonObject.getString("name")).position(new LatLng(latitud,
-                                            longitud)).snippet("Cupos : " + jsonObject.getString("current_used")
+                                            longitud)).snippet("Cupos : " + capacidadActual.toString()
                                     ).icon(BitmapDescriptorFactory.fromResource(R.drawable.aparcamiento))
                             );
                             mark.setTag(coch);
@@ -703,8 +703,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     Cochera info = (Cochera) marker.getTag();
                     /*Intent intent = new Intent(MapsActivity.this, DetalleServicio.class);
                     intent.putExtra("Cochera", info);*/
-                    mMap.addPolyline(new PolylineOptions().add(ultimaPosicion,new LatLng(info.getLatitud(),info.getLongitud())));
-                    Intent intent = new Intent(MapsActivity.this, ContainerCocheraActivity.class);
+                        Intent intent = new Intent(MapsActivity.this, ContainerCocheraActivity.class);
                     intent.putExtra("Cochera", info);
                     startActivity(intent);
 
@@ -729,9 +728,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if(polyline!=null){
                     polyline.remove();
                 }
-                String  url= getDirectionsUrl(marker.getPosition(),ultimaPosicion);
-                CargarRuta cargarRuta=new CargarRuta();
-                cargarRuta.execute(url);
+                String  url= getDirectionsUrl(ultimaPosicion,marker.getPosition());
+                try {
+                    CargarRuta cargarRuta=new CargarRuta();
+                    cargarRuta.execute(url);
+                } catch (Exception e){
+                    Toast.makeText(getApplication(),"Error al cargar la ruta ", Toast.LENGTH_SHORT).show();
+                }
+
                 return false;
             }
         });
