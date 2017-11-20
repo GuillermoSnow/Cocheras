@@ -27,6 +27,9 @@ public class SobreNosotros extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent regresoMap = new Intent(v.getContext(), MapsActivity.class);
+                regresoMap.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                regresoMap.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                finish();
                 startActivity(regresoMap);
             }
         });

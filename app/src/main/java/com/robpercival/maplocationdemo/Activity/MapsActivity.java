@@ -292,7 +292,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             selectItem(position);
-
         }
     }
 
@@ -300,15 +299,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mDrawerList.setItemChecked(position, true);
         if (position == 0) {
             Intent sobreNosotros = new Intent(MapsActivity.this, SobreNosotros.class);
+            sobreNosotros.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            sobreNosotros.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK); // clears all previous activities task
             startActivity(sobreNosotros);
         }
         if (position == 1) {
             Intent terminosCondiciones = new Intent(MapsActivity.this, TerminosCondiciones.class);
+            terminosCondiciones.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            terminosCondiciones.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK); // clears all previous activities task
             startActivity(terminosCondiciones);
         }
         if (position == 2) {
-            Intent terminosCondiciones = new Intent(MapsActivity.this, Tutorial.class);
-            startActivity(terminosCondiciones);
+            Intent tutorial = new Intent(MapsActivity.this, Tutorial.class);
+            tutorial.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            tutorial.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK); // clears all previous activities task
+            startActivity(tutorial);
         }
         mDrawerLayout.closeDrawer(mDrawerList);
     }
@@ -753,6 +758,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
 
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.finish();
     }
 
 }
