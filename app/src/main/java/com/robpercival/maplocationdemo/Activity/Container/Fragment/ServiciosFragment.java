@@ -1,7 +1,6 @@
 package com.robpercival.maplocationdemo.Activity.Container.Fragment;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -12,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.robpercival.maplocationdemo.Activity.MapsActivity;
 import com.robpercival.maplocationdemo.Adapter.AdapterServicioCocheraRecyclerView;
 import com.robpercival.maplocationdemo.Model.Cochera;
 import com.robpercival.maplocationdemo.Model.Servicio;
@@ -77,9 +75,14 @@ public class ServiciosFragment extends Fragment {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent regresoMap = new Intent(v.getContext(), MapsActivity.class);
-                startActivity(regresoMap);
+                /*Intent regresoMap = new Intent(v.getContext(), MapsActivity.class);
+                startActivity(regresoMap);*/
+                onBackPressed();
             }
         });
+    }
+
+    public void onBackPressed() {
+        getActivity().onBackPressed();
     }
 }
