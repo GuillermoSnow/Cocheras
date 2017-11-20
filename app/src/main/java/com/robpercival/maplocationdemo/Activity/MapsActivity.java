@@ -728,8 +728,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if(polyline!=null){
                     polyline.remove();
                 }
-                String  url= getDirectionsUrl(ultimaPosicion,marker.getPosition());
                 try {
+                    String  url= getDirectionsUrl(ultimaPosicion,marker.getPosition());
                     CargarRuta cargarRuta=new CargarRuta();
                     cargarRuta.execute(url);
                 } catch (Exception e){
