@@ -1,6 +1,5 @@
 package com.robpercival.maplocationdemo.Activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -26,13 +25,18 @@ public class SobreNosotros extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent regresoMap = new Intent(v.getContext(), MapsActivity.class);
+               /* Intent regresoMap = new Intent(v.getContext(), MapsActivity.class);
                 regresoMap.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 regresoMap.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 finish();
-                startActivity(regresoMap);
+                startActivity(regresoMap);*/
+                onBackPressed();
             }
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }

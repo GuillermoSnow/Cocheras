@@ -3,6 +3,7 @@ package com.robpercival.maplocationdemo.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -19,6 +20,10 @@ public class Tutorial extends AppCompatActivity {
         setContentView(R.layout.activity_tutorial);
 
         getSupportActionBar().setTitle(Constantes.tutorial);
+        //Esto es para implementar el upButton con la funcionalidad de retrocer sin que vuelva a cargar el activity principal
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         btn_consulta = (ImageView) findViewById(R.id.btn_consulta);
 
@@ -35,5 +40,16 @@ public class Tutorial extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        onBackPressed();
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }
