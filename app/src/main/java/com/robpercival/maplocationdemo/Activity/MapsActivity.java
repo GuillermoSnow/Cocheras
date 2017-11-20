@@ -628,13 +628,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
             mMap.setMyLocationEnabled(true);
             Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            LatLng userLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
-            ultimaPosicion = userLocation;
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));
-            setLat(Double.toString(userLocation.latitude));
-            setLon(Double.toString(userLocation.longitude));
-            CargarUbicacionCocheras cargarUbicacionCocheras = new CargarUbicacionCocheras();
-            cargarUbicacionCocheras.execute(getUrl());
+            if(lastKnownLocation!=null) {
+                LatLng userLocation = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+                ultimaPosicion = userLocation;
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));
+                setLat(Double.toString(userLocation.latitude));
+                setLon(Double.toString(userLocation.longitude));
+                CargarUbicacionCocheras cargarUbicacionCocheras = new CargarUbicacionCocheras();
+                cargarUbicacionCocheras.execute(getUrl());
+            }
+            else {
+                Toast.makeText(getApplication(), "Hubo un problema al cargar las cocheras", Toast.LENGTH_SHORT).show();
+
+            }
 
         } else {
 
