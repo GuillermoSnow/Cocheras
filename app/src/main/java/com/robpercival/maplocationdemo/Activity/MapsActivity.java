@@ -507,7 +507,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     }
 
                     lineOptions.addAll(points);
-                    lineOptions.width(10);
+                    lineOptions.width(5);
                     lineOptions.color(Color.BLACK);
                     lineOptions.geodesic(true);
 
