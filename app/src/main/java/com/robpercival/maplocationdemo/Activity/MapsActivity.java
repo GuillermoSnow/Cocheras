@@ -478,34 +478,39 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         @Override
         protected void onPostExecute(List<List<HashMap<String, String>>> result) {
+            try {
 
-            ArrayList points = null;
-            PolylineOptions lineOptions = null;
-            MarkerOptions markerOptions = new MarkerOptions();
 
-            for (int i = 0; i < result.size(); i++) {
-                points = new ArrayList();
-                lineOptions = new PolylineOptions();
+                ArrayList points = null;
+                PolylineOptions lineOptions = null;
+                MarkerOptions markerOptions = new MarkerOptions();
 
-                List<HashMap<String, String>> path = result.get(i);
+                for (int i = 0; i < result.size(); i++) {
+                    points = new ArrayList();
+                    lineOptions = new PolylineOptions();
 
-                for (int j = 0; j < path.size(); j++) {
-                    HashMap<String, String> point = path.get(j);
+                    List<HashMap<String, String>> path = result.get(i);
 
-                    double lat = Double.parseDouble(point.get("lat"));
-                    double lng = Double.parseDouble(point.get("lng"));
-                    LatLng position = new LatLng(lat, lng);
+                    for (int j = 0; j < path.size(); j++) {
+                        HashMap<String, String> point = path.get(j);
 
-                    points.add(position);
+                        double lat = Double.parseDouble(point.get("lat"));
+                        double lng = Double.parseDouble(point.get("lng"));
+                        LatLng position = new LatLng(lat, lng);
+
+                        points.add(position);
+                    }
+
+                    lineOptions.addAll(points);
+                    lineOptions.width(10);
+                    lineOptions.color(Color.BLACK);
+                    lineOptions.geodesic(true);
+
                 }
-
-                lineOptions.addAll(points);
-                lineOptions.width(10);
-                lineOptions.color(Color.BLACK);
-                lineOptions.geodesic(true);
-
+                polyline = mMap.addPolyline(lineOptions);
+            } catch (Exception e) {
+                Toast.makeText(getApplication(), "Hubo un problema al cargar la ruta", Toast.LENGTH_SHORT).show();
             }
-            polyline=mMap.addPolyline(lineOptions);
         }
     }
 
@@ -725,9 +730,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                if(polyline!=null){
-                    polyline.remove();
+                try{
+                    if(polyline!=null){
+                        polyline.remove();
+                    }
+                }catch (Exception e){
+                    Toast.makeText(getApplication(),"Ocurrió un problema", Toast.LENGTH_SHORT).show();
                 }
+
                 try {
                     String  url= getDirectionsUrl(ultimaPosicion,marker.getPosition());
                     CargarRuta cargarRuta=new CargarRuta();
