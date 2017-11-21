@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">App Cocheras</string>
+    <string name="app_name">EasyParking</string>
     <string name="title_activity_maps">Map</string>
     <string name="action_settings">Settings</string>
     <string name="autocomplete_hint">Search a Place</string>

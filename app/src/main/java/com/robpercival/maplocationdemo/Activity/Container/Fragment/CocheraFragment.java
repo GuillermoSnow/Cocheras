@@ -1,10 +1,15 @@
 package com.robpercival.maplocationdemo.Activity.Container.Fragment;
 
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -12,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,6 +26,8 @@ import com.robpercival.maplocationdemo.R;
 import com.robpercival.maplocationdemo.Util.Constantes;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -80,8 +88,50 @@ public class CocheraFragment extends Fragment {
         textViewCupos.setText(getCochera().getCuposTomados());
         textViewDescripcion.setText(getCochera().getDescripcion());
         showToolbar("", true, view);
-
+        configureImageButton(view); //Se implementa la llamada
         return view;
+    }
+
+    private void configureImageButton(View v){
+        ImageButton btn = (ImageButton) v.findViewById(R.id.imgBtn_Phone);
+
+        btn.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+//                Toast.makeText(getActivity(), "You Clicked the button!", Toast.LENGTH_LONG).show();
+                Intent  intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"+getCochera().getTelefono()));
+                if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    if(ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),Manifest.permission.CALL_PHONE)){
+                        //YA LO CANCELE Y SOLICITO NUEVAMENTE LOS PERMISOS
+                        new SweetAlertDialog(getActivity(),SweetAlertDialog.WARNING_TYPE)
+                                .setTitleText("ANTES!")
+                                .setContentText("Debes otorgar los permisos de llamada si quieres llamar ")
+                                .setConfirmText("Permitir")
+                                .setCancelText("Cancelar ")
+                                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                        sweetAlertDialog.cancel();
+                                    }
+                                })
+                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                        sweetAlertDialog.cancel();
+                                        ActivityCompat.requestPermissions(getActivity(),
+                                                new String[]{Manifest.permission.CALL_PHONE},Constantes.allow_call);
+                                    }
+                                }).show();
+                    }else{//PRIMERA VEZ
+                        ActivityCompat.requestPermissions(getActivity(),
+                                new String[]{Manifest.permission.CALL_PHONE},Constantes.allow_call);
+                    }
+                }else{
+                    startActivity(intent);
+                }
+            }
+        });
     }
 
     public void showToolbar(String tittle, boolean upButton, View view){

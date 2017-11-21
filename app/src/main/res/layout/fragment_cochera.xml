@@ -111,7 +111,7 @@ tools:context="com.robpercival.maplocationdemo.Activity.Container.ContainerCoche
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin">
                 <ImageButton
-                    android:id="@+id/ImgBtn_phone"
+                    android:id="@+id/ImgBtn_address"
                     android:layout_marginTop="2dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -142,7 +142,7 @@ tools:context="com.robpercival.maplocationdemo.Activity.Container.ContainerCoche
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin">
                 <ImageButton
-                    android:id="@+id/ImgBtn_address"
+                    android:id="@+id/imgBtn_Phone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
