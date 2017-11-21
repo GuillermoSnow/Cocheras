@@ -104,7 +104,7 @@ public class CocheraFragment extends Fragment {
                 if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                     if(ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),Manifest.permission.CALL_PHONE)){
                         //YA LO CANCELE Y SOLICITO NUEVAMENTE LOS PERMISOS
-                        new SweetAlertDialog(getActivity(),SweetAlertDialog.WARNING_TYPE)
+                        new SweetAlertDialog(getContext(),SweetAlertDialog.WARNING_TYPE)
                                 .setTitleText("ANTES!")
                                 .setContentText("Debes otorgar los permisos de llamada si quieres llamar ")
                                 .setConfirmText("Permitir")
