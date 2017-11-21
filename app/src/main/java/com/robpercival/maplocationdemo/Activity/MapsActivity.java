@@ -744,6 +744,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             layoutParams.setMargins(30, 0, 0, 40);
         }
 
+        mMap.getUiSettings().setMapToolbarEnabled(false);
+        //Recuerda que puedes eliminarlos gestos de google Maps como eran estos 2 que me direccionaban a la aplicacion de google maps
+
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             public void onInfoWindowClick(Marker marker) {
                 if(!marker.getTitle().equals("User Location")) {
