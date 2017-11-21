@@ -22,6 +22,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -62,6 +63,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     LocationManager locationManager;
     LocationListener locationListener;
+    View mapView;
     private String[] mOpcionesTitles;
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
@@ -275,6 +277,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
+        mapView = mapFragment.getView(); //Esto es parte para reposicionar el location button
         mapFragment.getMapAsync(this);
 
         mOpcionesTitles = getResources().getStringArray(R.array.opciones_array);
@@ -575,7 +578,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         MultiDex.install(this);
         mMap = googleMap;
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-
             mMap.setMyLocationEnabled(true);
         } else
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
@@ -715,7 +717,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
         }
+//        Esto es para reposicionar el location button para que vaya en la parte de abajo a la derecha
+        View locationButton = ((View) mapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
+        RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
+        // position on right bottom
+        rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
+        rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);rlp.setMargins(0,0,30,30);
+//      hasta Aqui
 
+//      Esto es para reposicionar el locationCompass  button para que vaya en la parte de abajo a la izquierda
+        if (mapView != null &&
+                mapView.findViewById(Integer.parseInt("1")) != null) {
+            // Get the view
+            View locationCompass = ((View) mapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("5"));
+            // and next place it, on bottom right (as Google Maps app)
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)
+                    locationCompass.getLayoutParams();
+            // position on bottom - left
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 0);
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_END, 0);
+            layoutParams.addRule(RelativeLayout.ALIGN_END, 0);
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+            layoutParams.setMargins(30, 0, 0, 40);
+        }
 
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             public void onInfoWindowClick(Marker marker) {
