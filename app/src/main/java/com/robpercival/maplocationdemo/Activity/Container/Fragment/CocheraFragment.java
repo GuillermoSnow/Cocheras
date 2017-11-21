@@ -27,8 +27,6 @@ import com.robpercival.maplocationdemo.Util.Constantes;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
-import cn.pedant.SweetAlert.SweetAlertDialog;
-
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -101,37 +99,19 @@ public class CocheraFragment extends Fragment {
             public void onClick(View v) {
 //                Toast.makeText(getActivity(), "You Clicked the button!", Toast.LENGTH_LONG).show();
                 Intent  intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"+getCochera().getTelefono()));
-                if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    if(ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),Manifest.permission.CALL_PHONE)){
-                        //YA LO CANCELE Y SOLICITO NUEVAMENTE LOS PERMISOS
-                        new SweetAlertDialog(getContext(),SweetAlertDialog.WARNING_TYPE)
-                                .setTitleText("ANTES!")
-                                .setContentText("Debes otorgar los permisos de llamada si quieres llamar ")
-                                .setConfirmText("Permitir")
-                                .setCancelText("Cancelar ")
-                                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                    @Override
-                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                        sweetAlertDialog.cancel();
-                                    }
-                                })
-                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                    @Override
-                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                        sweetAlertDialog.cancel();
-                                        ActivityCompat.requestPermissions(getActivity(),
-                                                new String[]{Manifest.permission.CALL_PHONE},Constantes.allow_call);
-                                    }
-                                }).show();
-                    }else{//PRIMERA VEZ
-                        ActivityCompat.requestPermissions(getActivity(),
-                                new String[]{Manifest.permission.CALL_PHONE},Constantes.allow_call);
-                    }
-                }else{
+                 if(ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED){
+//                    Toast.makeText(getActivity(),"no hay permiso",Toast.LENGTH_LONG).show();
+                    requestPermision();
+                }else {
                     startActivity(intent);
                 }
             }
+
         });
+
+    }
+    public void requestPermision(){
+        ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.CALL_PHONE},1);
     }
 
     public void showToolbar(String tittle, boolean upButton, View view){
