@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.robpercival.maplocationdemo.Model.Cochera;
 import com.robpercival.maplocationdemo.R;
+import com.robpercival.maplocationdemo.Util.Constantes;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -50,24 +51,27 @@ public class CocheraFragment extends Fragment {
         TextView textViewCupos= (TextView)view.findViewById(R.id.cuposDisponible_cochera);
         TextView textViewDireccion=(TextView)view.findViewById(R.id.direccion_cochera);
 
-        final ImageView imageView = (ImageView) view.findViewById(R.id.img_cochera);
+        if(getCochera().getUrl_image().equals(Constantes.img_cochera_defecto)){
+        }else {
+            final ImageView imageView = (ImageView) view.findViewById(R.id.img_cochera);
+            Picasso.with(getActivity()).load(getCochera().getUrl_image()).into(new Target() {
+                @Override
+                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                    imageView.setBackground(new BitmapDrawable(bitmap));
+                }
 
-        Picasso.with(getActivity()).load(getCochera().getUrl_image()).into(new Target() {
-            @Override
-            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                imageView.setBackground(new BitmapDrawable(bitmap));
-            }
+                @Override
+                public void onBitmapFailed(Drawable errorDrawable) {
+                    Log.d("TAG", "FAILED");
+                }
 
-            @Override
-            public void onBitmapFailed(Drawable errorDrawable) {
-                Log.d("TAG", "FAILED");
-            }
+                @Override
+                public void onPrepareLoad(Drawable placeHolderDrawable) {
+                    Log.d("TAG", "Prepare Load");
+                }
+            });
+        }
 
-            @Override
-            public void onPrepareLoad(Drawable placeHolderDrawable) {
-                Log.d("TAG", "Prepare Load");
-            }
-        });
         textViewNombre.setText(getCochera().getNombre());
         textViewTelefono.setText(getCochera().getTelefono());
         textViewCapacidad.setText(getCochera().getCapacidad());
