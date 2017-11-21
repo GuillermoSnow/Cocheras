@@ -1,17 +1,24 @@
 package com.robpercival.maplocationdemo.Activity.Container.Fragment;
 
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.robpercival.maplocationdemo.Model.Cochera;
 import com.robpercival.maplocationdemo.R;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,6 +50,24 @@ public class CocheraFragment extends Fragment {
         TextView textViewCupos= (TextView)view.findViewById(R.id.cuposDisponible_cochera);
         TextView textViewDireccion=(TextView)view.findViewById(R.id.direccion_cochera);
 
+        final ImageView imageView = (ImageView) view.findViewById(R.id.img_cochera);
+
+        Picasso.with(getActivity()).load(getCochera().getUrl_image()).into(new Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                imageView.setBackground(new BitmapDrawable(bitmap));
+            }
+
+            @Override
+            public void onBitmapFailed(Drawable errorDrawable) {
+                Log.d("TAG", "FAILED");
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+                Log.d("TAG", "Prepare Load");
+            }
+        });
         textViewNombre.setText(getCochera().getNombre());
         textViewTelefono.setText(getCochera().getTelefono());
         textViewCapacidad.setText(getCochera().getCapacidad());
@@ -83,5 +108,6 @@ public class CocheraFragment extends Fragment {
     public void onBackPressed() {
         getActivity().onBackPressed();
     }
+
 
 }

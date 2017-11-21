@@ -25,7 +25,7 @@ tools:context="com.robpercival.maplocationdemo.Activity.Container.ContainerCoche
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
-                android:id="@+id/imageHeader"
+                android:id="@+id/img_cochera"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/estacionamiento"

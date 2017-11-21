@@ -397,6 +397,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         coch.setNombre(jsonObject.getString("name"));
                         coch.setTelefono(jsonObject.getString("phone_number"));
                         coch.setDireccion(jsonObject.getString("address"));
+                        coch.setUrl_image(jsonObject.getString("url_image"));
                         Integer x = Integer.valueOf(jsonObject.getString("current_used"));
                         Integer capacidadActual = Integer.valueOf(jsonObject.getString("capacity")) - x;
                         coch.setCuposTomados(jsonObject.getString("current_used"));
