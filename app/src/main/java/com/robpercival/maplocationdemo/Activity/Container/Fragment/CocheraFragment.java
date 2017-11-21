@@ -50,6 +50,7 @@ public class CocheraFragment extends Fragment {
         TextView textViewCapacidad= (TextView)view.findViewById(R.id.capacidad_cochera);
         TextView textViewCupos= (TextView)view.findViewById(R.id.cuposDisponible_cochera);
         TextView textViewDireccion=(TextView)view.findViewById(R.id.direccion_cochera);
+        TextView textViewDescripcion=(TextView)view.findViewById(R.id.info_cochera);
 
         if(getCochera().getUrl_image().equals(Constantes.img_cochera_defecto)){
         }else {
@@ -77,6 +78,7 @@ public class CocheraFragment extends Fragment {
         textViewCapacidad.setText(getCochera().getCapacidad());
         textViewDireccion.setText(getCochera().getDireccion());
         textViewCupos.setText(getCochera().getCuposTomados());
+        textViewDescripcion.setText(getCochera().getDescripcion());
         showToolbar("", true, view);
 
         return view;

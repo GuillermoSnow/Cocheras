@@ -17,6 +17,7 @@ public class Cochera implements Serializable{
     private String nombre;
     private String direccion;
     private String url_image;
+    private String descripcion;
 
     public String getCuposTomados() {
         return cuposTomados;
@@ -98,5 +99,13 @@ public class Cochera implements Serializable{
 
     public void setUrl_image(String url_image) {
         this.url_image = url_image;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 }

@@ -71,12 +71,6 @@ tools:context="com.robpercival.maplocationdemo.Activity.Container.ContainerCoche
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 >
-                <TextView
-                    android:id="@+id/txt_capacidad_cochera"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/textsize_capacidad_cochera"
-                    android:text="@string/capacidad_cochera_prueba" />
 
                 <TextView
                     android:id="@+id/cuposDisponible_cochera"
@@ -84,16 +78,15 @@ tools:context="com.robpercival.maplocationdemo.Activity.Container.ContainerCoche
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/textsize_capacidad_cochera"
                     android:text="@string/cuposDisponibleTest"
-                    android:layout_marginLeft="@dimen/marginleft_cuposDisponible_cochera"
-                    />
+                    android:layout_marginRight="@dimen/marginleft_cuposDisponible_cochera"
+                    android:layout_marginLeft="@dimen/marginleft_cuposDisponible_cochera" />
                 <TextView
-                    android:id="@+id/slash"
+                    android:id="@+id/txt_capacidad_cochera"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/textsize_capacidad_cochera"
-                    android:text="/"
-                    android:layout_marginLeft="@dimen/marginleft_slash"
-                    />
+                    android:text="@string/capacidad_cochera_prueba" />
+
                 <TextView
                     android:id="@+id/capacidad_cochera"
                     android:layout_width="wrap_content"
@@ -119,10 +112,11 @@ tools:context="com.robpercival.maplocationdemo.Activity.Container.ContainerCoche
                 android:paddingRight="@dimen/activity_horizontal_margin">
                 <ImageButton
                     android:id="@+id/ImgBtn_phone"
+                    android:layout_marginTop="2dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
-                    android:src="@drawable/address" />
+                    android:src="@drawable/posicion" />
                 <TextView
                     android:id="@+id/direccion_cochera"
                     android:layout_width="wrap_content"
@@ -191,6 +185,38 @@ tools:context="com.robpercival.maplocationdemo.Activity.Container.ContainerCoche
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="15dp"
                     android:text="@string/email_cocheraTest"
+                    android:layout_gravity="center_horizontal"
+                    android:textStyle="bold"
+                    />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_divider"
+                android:background="@android:color/darker_gray"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="10dp"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin">
+                <ImageButton
+                    android:id="@+id/ImgBtn_information"
+                    android:layout_marginTop="2dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/informacion" />
+                <TextView
+                    android:id="@+id/info_cochera"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/textsize_capacidad_cochera"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/informacion"
                     android:layout_gravity="center_horizontal"
                     android:textStyle="bold"
                     />

@@ -17,7 +17,7 @@
     <string name="tab_detalleCochera">Detalle Cochera</string>
     <string name="tab_detalleServicios">Detalle Servicios</string>
     <string name="nameCochera_prueba">Los Jardines</string>
-    <string name="capacidad_cochera_prueba">Capacidad Actual</string>
+    <string name="capacidad_cochera_prueba">DISPONIBLES DE</string>
     <string name="cuposDisponibleTest">25</string>
     <string name="direccion_cocheraTest">Av. Canadá 4071, San Luis</string>
     <string name="telefono_cocheraTest">997595078</string>
@@ -74,4 +74,5 @@
     <string name="play_again_desc">Este boton inicia el walkthrough denuevo </string>
     <string name="play_again">Walkthrough</string>
     <string name="walkthrough">¿Quiéres ver el tutorial otra vez ? Mira los beneficios que tiene nuestra aplicación. Solo tienes que presionar en la imagen y mira otra vez el tutorial.</string>
+    <string name="informacion">Los Jardines es la cochera ideal para el coche , brinda al cliente la conformidad y seguridad del estacionamiento.</string>
 </resources>
