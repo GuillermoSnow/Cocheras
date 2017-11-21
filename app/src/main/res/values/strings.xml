@@ -17,7 +17,7 @@
     <string name="tab_detalleCochera">Detalle Cochera</string>
     <string name="tab_detalleServicios">Detalle Servicios</string>
     <string name="nameCochera_prueba">Los Jardines</string>
-    <string name="capacidad_cochera_prueba">DISPONIBLES DE</string>
+    <string name="capacidad_cochera_prueba">ESPACIO(S) TOMADO(S) DE</string>
     <string name="cuposDisponibleTest">25</string>
     <string name="direccion_cocheraTest">Av. Canadá 4071, San Luis</string>
     <string name="telefono_cocheraTest">997595078</string>
